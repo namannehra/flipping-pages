@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="500" height="500" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient-12" gradientUnits="userSpaceOnUse" x1="406.8206787109375" y1="142.41018676757812" x2="406.8206787109375" y2="369.44610595703125" gradientTransform="matrix(0.243139, -0.970327, 0.358081, 0.090649, 226.581119, 647.006886)">
+      <stop style="stop-color: rgb(36, 165, 103);" offset="0"/>
+      <stop style="stop-color: rgb(22, 160, 93);" offset="1"/>
+    </linearGradient>
+    <linearGradient id="gradient-13" gradientUnits="userSpaceOnUse" x1="354.3183135986328" y1="28.881683349609375" x2="354.3183135986328" y2="195.33468627929688" gradientTransform="matrix(0.800973, -0.594222, 0.434796, 0.592105, 37.067863, 261.716556)">
+      <stop style="stop-color: rgb(72, 137, 244);" offset="0"/>
+      <stop style="stop-color: rgb(68, 126, 222);" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g transform="matrix(1.938982, 0, 0, 1.938982, 15.468394, 15.620599)">
+    <path d="M 256 28.739 L 256 134.613 L 151.466 195.276 L 151.466 195.297 L 60.244 142.359 L 60.244 142.339 L 256 28.739 Z" style="fill: rgb(72, 207, 244);"/>
+    <path d="M 256 28.739 L 256 134.613 L 360.534 195.276 L 360.534 195.297 L 451.756 142.359 L 451.756 142.339 L 256 28.739 Z" style="fill: url(#gradient-13);"/>
+    <path d="M 256 483.138 L 256 377.264 L 360.534 316.601 L 360.534 316.58 L 451.756 369.518 L 451.756 369.538 L 256 483.138 Z" style="fill: rgb(212, 255, 102);"/>
+    <path d="M 60.244 369.518 L 60.244 142.339 L 151.466 195.296 L 151.466 316.58 Z" style="fill: rgb(221, 78, 65);"/>
+    <path d="M 451.756 369.518 L 451.756 142.339 L 360.534 195.297 L 360.534 316.58 Z" style="fill: url(#gradient-12);"/>
+    <path d="M 256 28.739 L 256 134.613 L 361.339 196.238 L 253.859 256.995 L 60.244 142.359 L 60.244 142.339 L 256 28.739 Z" style="fill: rgba(116, 167, 255, 0.639216);"/>
+    <path d="M 256.256 483.261 L 256.256 377.387 L 151.486 316.587 L 60.23 369.537 L 256.256 483.261 Z" style="fill: rgb(248, 161, 10);"/>
+    <path d="M 256.146 483.258 L 254.067 257.433 L 451.747 142.408 L 451.913 369.605 L 256.146 483.258 Z" style="stroke-width: 1px; fill: rgba(242, 242, 242, 0.39);"/>
+  </g>
+</svg>

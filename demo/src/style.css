@@ -1,0 +1,36 @@
+.pages {
+  touch-action: pinch-zoom;
+  user-select: none;
+}
+
+.page {
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.page0 {
+  background-color: #F44336;
+  background-image: url('./img/0.svg')
+}
+
+.page1 {
+  background-color: #9C27B0;
+  background-image: url('./img/1.svg')
+}
+
+.page2 {
+  background-color: #03A9F4;
+  background-image: url('./img/2.svg')
+}
+
+.page3 {
+  background-color: #4CAF50;
+  background-image: url('./img/3.svg')
+}
+
+.page4 {
+  background-color: #607D8B;
+  background-image: url('./img/4.svg')
+}
