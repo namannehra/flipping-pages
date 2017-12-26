@@ -19,13 +19,13 @@ React component for flipping book pages animation
 | `thresholdSpeed`    | `number` | `0.1`             | -        |
 
 ### `animationDuration`
-Time in milliseconds for one complete turn
+Time in milliseconds for one complete turn.
 
 ### `disabled`
-Disables swiping
+Disables swiping.
 
 ### `noAnimation`
-Disables animation
+Disables animation.
 
 ### `onChange`
 Called when user swipes to turn page. First Argumnt in direction (`1` or `-1`).
