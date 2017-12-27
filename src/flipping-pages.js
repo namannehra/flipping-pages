@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 import './style.module.css'
-import { O_APPEND } from 'constants';
-import { type } from 'os';
 
 class FlippingPages extends Component {
   constructor(props) {
@@ -252,7 +250,7 @@ FlippingPages.defaultProps = {
   disabled: false,
   noAnimation: false,
   onChange: null,
-  onOverScroll: overscroll => 0,
+  onOverScroll: overscroll => overscroll / 4,
   shadowBackground: 'rgba(0,0,0,0.1)',
   swipeLength: 400,
   thresholdSpeed: 0.1,

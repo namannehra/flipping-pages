@@ -1,12 +1,12 @@
 'use strict'
 
 const path = require('path')
-
 const webpack = require('webpack')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const config = {
-  entry: './src/flipping-pages.js',
+  entry: './src/flipping-pages',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'flipping-pages.js',
@@ -14,10 +14,8 @@ const config = {
     libraryTarget: 'umd',
     libraryExport: 'default',
   },
-  externals: [
-    'react',
-    'prop-types',
-  ],
+  externals: [/node_modules/],
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -26,13 +24,16 @@ const config = {
         use: [
           {
             loader: 'style-loader',
-            options: {}
+            options: {
+              insertAt: 'top',
+              sourceMap: true,
+            }
           }, {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
               minimize: true,              
               modules: true,
+              sourceMap: true,
             }
           }
         ]
@@ -58,12 +59,12 @@ const config = {
     ]
   },
   plugins: [
-    new UglifyJsPlugin({
-      exclude: /node_modules/,
-      parallel: 4,
-    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    new CleanWebpackPlugin(['build']),
+    new UglifyJsPlugin({
+      sourceMap: true
     }),
   ]
 }

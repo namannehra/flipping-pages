@@ -1,8 +1,11 @@
 # flipping-pages
 React component for flipping book pages animation
 
-## Demo
-[flipping-pages - Demo](https://namannehra.github.io/flipping-pages/)
+## Demos
+
+[Demo 1](https://namannehra.github.io/flipping-pages/demo1.html)
+
+[Demo 2](https://namannehra.github.io/flipping-pages/demo2.html)
 
 ## Props
 
@@ -89,7 +92,9 @@ class App extends Component {
   render() {
     return (
       <FlippingPages selected={0}>
-        <input/>
+        <div>
+          <input/>
+        </div>
       </FlippingPages>
     )
   }
@@ -108,10 +113,12 @@ class App extends Component {
   render() {
     return (
       <FlippingPages selected={0}>
-        <input
-          value={this.state.value}
-          onChange={eve => this.setState({value: eve.target.value})}
-        />
+        <div>
+          <input
+            value={this.state.value}
+            onChange={eve => this.setState({value: eve.target.value})}
+          />
+        </div>
       </FlippingPages>
     )
   }

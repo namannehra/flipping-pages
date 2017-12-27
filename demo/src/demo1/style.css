@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+}
+
+.pages {
+  height: 100vh;
+  overflow: hidden;
+  perspective: 200vh;
+}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import FlippingPages from '../../src/flipping-pages'
+import FlippingPages from 'flipping-pages'
 
 class App extends Component {
   constructor(props) {
