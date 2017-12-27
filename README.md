@@ -1,6 +1,18 @@
 # flipping-pages
 React component for flipping book pages animation
 
+## Installation
+
+using yarn:
+```
+yarn add flipping-pages
+```
+
+Using npm:
+```
+npm install --save flipping-pages
+```
+
 ## Demos
 
 [Demo 1](https://namannehra.github.io/flipping-pages/demo1.html)
@@ -86,7 +98,7 @@ and wrap flipping-pages inside a component that manages state for all children.
 
 #### Examples
 
-Wrong
+Wrong:
 ```
 class App extends Component {
   render() {
@@ -101,7 +113,7 @@ class App extends Component {
 }
 ```
 
-Correct
+Correct:
 ```
 class App extends Component {
   constructor(props) {

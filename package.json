@@ -2,7 +2,7 @@
   "name": "flipping-pages",
   "version": "1.0.0",
   "description": "React component for flipping book pages animation",
-  "main": "main/flipping-pages.js",
+  "main": "build/flipping-pages.js",
   "homepage": "https://github.com/namannehra/flipping-pages",
   "repository": {
     "url": "https://github.com/namannehra/flipping-pages",
