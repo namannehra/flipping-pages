@@ -1,0 +1,90 @@
+.Core {
+    position: relative;
+}
+
+.page {
+    position: absolute;
+    overflow: hidden;
+    /* https://stackoverflow.com/questions/30983212/1px-white-spacing-in-chrome-between-divs */
+    backface-visibility: hidden;
+}
+
+.page.vertical {
+    height: 50%;
+    width: 100%
+}
+
+.page.horizontal {
+    height: 100%;
+    width: 50%
+}
+
+.prev {
+    top: 0;
+    left: 0;
+}
+
+.prev.vertical {
+    right: 0;
+    transform-origin: bottom;
+}
+
+.prev.horizontal {
+    bottom: 0;
+    transform-origin: right;
+}
+
+.next {
+    right: 0;
+    bottom: 0;
+}
+
+.next.vertical {
+    left: 0;
+    transform-origin: top;
+}
+
+.next.horizontal {
+    top: 0;
+    transform-origin: left;
+}
+
+.page > div {
+    position: absolute;
+}
+
+.page.vertical > div {
+    height: 200%;
+    right: 0;
+    left: 0;
+}
+
+.page.horizontal > div {
+    width: 200%;
+    top: 0;
+    bottom: 0;
+}
+
+.prev.vertical > div {
+    top: 0;
+}
+
+.prev.horizontal > div {
+    left: 0;
+}
+
+.next.vertical > div {
+    bottom: 0;
+}
+
+.next.horizontal > div {
+    right: 0;
+}
+
+.shadow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

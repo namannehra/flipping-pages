@@ -1,35 +1,18 @@
 'use strict'
 
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const GenerateJsonPlugin = require('generate-json-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const MinifyPlugin = require('babel-minify-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const {resolve} = require('path')
 
-const originalJson = require('./package.json')
-
-const {scripts, devDependencies, ...buildJson} = originalJson
-
-const externals = {}
-
-for (const name of Object.keys(Object.assign({}, buildJson.dependencies, buildJson.peerDependencies))) {
-    externals[name] = {
-        commonjs: name,
-        commonjs2: name,
-        amd: name,
-    }
-}
-
 const config = {
     mode: 'production',
-    entry: './src/FlippingPages.js',
+    entry: './demo/index.js',
     output: {
-        filename: 'FlippingPages.js',
-        path: resolve(__dirname, 'build/flipping-pages'),
-        library: 'flipping-pages',
-        libraryTarget: 'umd',
+        filename: '[hash].js',
+        path: resolve(__dirname, 'build/demo'),
     },
     module: {
         rules: [
@@ -48,26 +31,39 @@ const config = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: 'babel-loader',
+            }, {
+                test: /\.svg$/,
+                use: 'url-loader',
             },
         ],
     },
-    externals,
+    resolve: {
+        alias: {
+            'flipping-pages': resolve(__dirname, './src/FlippingPages'),
+        },
+    },
     optimization: {
         minimizer: [
             new OptimizeCSSAssetsPlugin(),
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(['build/flipping-pages']),
+        new CleanWebpackPlugin(['build/demo']),
         new MiniCssExtractPlugin({
-            filename: 'FlippingPages.css',
+            filename: '[hash].css',
         }),
         new MinifyPlugin({}, {comments: false}),
-        new GenerateJsonPlugin('package.json', buildJson),
-        new CopyWebpackPlugin([
-            'LICENSE',
-            'README.md',
-        ]),
+        new HtmlWebpackPlugin({
+            template: 'demo/index.html',
+            minify: {
+                collapseBooleanAttributes: true,
+                collapseInlineTagWhitespace: true,
+                collapseWhitespace: true,
+                decodeEntities: true,
+                removeAttributeQuotes: true,
+                removeComments: true,
+            },
+        }),
     ],
 }
 
