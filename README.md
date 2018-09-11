@@ -2,7 +2,7 @@
 
 React component for flipping book pages animation
 
-[Demo](https://namannehra.github.io/flipping-pages)
+[Demo](https://namannehra.github.io/flipping-pages/)
 
 ## Installation
 
@@ -129,7 +129,7 @@ Minimum speed in pixels per milliseconds to register a swipe.
   [Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select)
 
 * You should set CSS `perspective` property for 3D effect when pages turn. Value
-  double of element's height (width is `horizontal` is `true`) is recomended.
+  double of element's height (width if `horizontal` is `true`) is recomended.
   [Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/perspective)
 
 ## Limitations
