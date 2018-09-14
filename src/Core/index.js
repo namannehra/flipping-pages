@@ -11,7 +11,7 @@ class Core extends Component {
     }
 
     render() {
-        const {children, className, horizontal, rootRef, selected, shadowBackground, ...otherProps} = this.props
+        const {children, className, horizontal, rootRef, selected, shadowBackground, willChange, ...otherProps} = this.props
         const direction = this.getDirection()
         const prev = children[Math.floor(selected)]
         const next = children[Math.floor(selected + 1)]
@@ -20,26 +20,18 @@ class Core extends Component {
         if (turn < 0) {
             turn -= Math.floor(turn)
         }
-        let currPage = null
-        if (curr && turn) {
-            const rotation = (turn < 0.5 ? turn : turn - 1) * (horizontal ? -180 : 180)
-            const currClassName = classNames(style.page, style[turn < 0.5 ? 'next' : 'prev'], style[direction])
-            const currStyle = {
-                transform: `rotate${horizontal ? 'Y' : 'X'}(${rotation}deg)`,
-                willChange: 'transform',
-            }
+        const rotation = (turn < 0.5 ? turn : turn - 1) * (horizontal ? -180 : 180)
+        const currClassName = classNames(style.page, style[turn < 0.5 ? 'next' : 'prev'], style[direction])
+        const currStyle = {
+            transform: `rotate${horizontal ? 'Y' : 'X'}(${rotation}deg)`,
+        }
         const shadowStyle = {
-                background: shadowBackground,
-                opacity: turn < 0.5 ? turn : 1 - turn,
-            }
-            currPage = (
-                <div className={currClassName} style={currStyle}>
-                    <div>
-                        {curr}
-                    </div>
-                    <div className={style.shadow} style={currShadowStyle}></div>
-                </div>
-            )
+            background: shadowBackground,
+            opacity: turn < 0.5 ? turn : 1 - turn,
+        }
+        if (willChange) {
+            currStyle.willChange = 'transform'
+            shadowStyle.willChange = 'opacity'
         }
         return (
             <div ref={rootRef} className={classNames(style.Core, className)} {...otherProps}>
@@ -70,11 +62,13 @@ Core.propTypes = {
     rootRef: PropTypes.object,
     selected: PropTypes.number,
     shadowBackground: PropTypes.string,
+    willChange: PropTypes.bool,
 }
 
 Core.defaultProps = {
     horizontal: false,
     shadowBackground: 'rgba(0,0,0,0.25)',
+    willChange: false,
 }
 
 export default Core

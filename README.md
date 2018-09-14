@@ -73,6 +73,7 @@ export default App
 | `shadowBackground`  | `string` | `rgba(0,0,0,0.25)`         |          |
 | `swipeLength`       | `number` | `400`                      |          |
 | `thresholdSpeed`    | `number` | `0.1`                      |          |
+| `willChange`        | `bool`   | `false`                    |          |
 
 ### `animationDuration`
 Time in milliseconds for one page turn.
@@ -118,6 +119,10 @@ The distance in pixels user must swipe to completely turn a page.
 
 ### `thresholdSpeed`
 Minimum speed in pixels per milliseconds to register a swipe.
+
+### `willChange`
+Applies CSS `will-change` on rotating element.
+[Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change)
 
 ## Notes
 

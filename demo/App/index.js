@@ -95,6 +95,7 @@ class App extends Component {
                     className={style.flippingPages}
                     style={{perspective}}
                     onSelectedChange={this.handleFlippingPagesSelectedChange}
+                    willChange={true}
                     {...flippingPagesProps}
                 >
                     {pages}
