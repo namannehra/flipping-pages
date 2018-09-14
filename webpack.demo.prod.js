@@ -48,7 +48,7 @@ const config = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(['build/demo']),
+        new CleanWebpackPlugin(['build/demo'], {exclude: ['.git']}),
         new MiniCssExtractPlugin({
             filename: '[hash].css',
         }),
