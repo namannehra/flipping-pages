@@ -14,11 +14,11 @@ class Core extends Component {
         const {children, className, horizontal, rootRef, selected, shadowBackground, ...otherProps} = this.props
         const direction = this.getDirection()
         const prev = children[Math.floor(selected)]
-        const next = children[Math.ceil(selected)]
+        const next = children[Math.floor(selected + 1)]
         const curr = children[Math.round(selected)]
         let turn = selected % 1
         if (turn < 0) {
-            turn++
+            turn -= Math.floor(turn)
         }
         let currPage = null
         if (curr && turn) {
@@ -28,7 +28,7 @@ class Core extends Component {
                 transform: `rotate${horizontal ? 'Y' : 'X'}(${rotation}deg)`,
                 willChange: 'transform',
             }
-            const currShadowStyle = {
+        const shadowStyle = {
                 background: shadowBackground,
                 opacity: turn < 0.5 ? turn : 1 - turn,
             }
@@ -53,7 +53,12 @@ class Core extends Component {
                         {next}
                     </div>
                 </div>
-                {currPage}
+                <div className={currClassName} style={currStyle}>
+                    <div>
+                        {curr}
+                    </div>
+                    <div className={style.shadow} style={shadowStyle}></div>
+                </div>
             </div>
         )
     }
