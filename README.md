@@ -29,7 +29,7 @@ class App extends Component {
         this.state = {
             selected: 0,
         }
-        handleSelectedChange = handleSelectedChange.bind(this)
+        this.handleSelectedChange = this.handleSelectedChange.bind(this)
     }
     handleSelectedChange(selected) {
         this.setState({selected})
