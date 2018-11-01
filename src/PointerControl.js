@@ -142,12 +142,14 @@ class PointerControl extends PureComponent {
             selected,
             swipeLength,
             thresholdSpeed,
-            ...otherProps} = this.props
-            return cloneElement(flippingPages, {
+            ...otherProps
+        } = this.props
+        return cloneElement(flippingPages, {
             animationDuration: this.state.down ? 0 : this.props.animationDuration,
             className: classNames(style.flippingPages, className),
             onPointerDown: this.handlePointerDown,
             selected: this.state.selected,
+            willChange: this.state.down,
             ...otherProps
         })
     }
