@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import {cloneElement, Component} from 'react'
+import {Children, cloneElement, PureComponent} from 'react'
 
-import style from './style.css'
+import style from './PointerControl.sass'
 
-class PointerControl extends Component {
+class PointerControl extends PureComponent {
 
     state = {
         down: false,
@@ -12,7 +12,7 @@ class PointerControl extends Component {
     }
 
     getTurn() {
-        let swipe = this.props.horizontal ? this.startX - this.x : this.startY - this.y
+        let swipe = this.props.direction === 'horizontal' ? this.startX - this.x : this.startY - this.y
         if (this.props.reverse) {
             swipe *= -1
         }
@@ -25,11 +25,11 @@ class PointerControl extends Component {
         let selected = this.props.selected + turn
         selected = Math.max(selected, this.props.selected - 1)
         selected = Math.min(selected, this.props.selected + 1)
-        const childrenLen = this.props.children.length
+        const childrenCount = Children.count(this.props.children)
         if (selected < 0) {
             selected = -this.props.onOverSwipe(-selected)
-        } else if (selected + 1 > childrenLen) {
-            selected = this.props.onOverSwipe(selected + 1 - childrenLen) + childrenLen - 1
+        } else if (selected + 1 > childrenCount) {
+            selected = this.props.onOverSwipe(selected + 1 - childrenCount) + childrenCount - 1
         }
         this.setState({selected})
     }
@@ -37,7 +37,10 @@ class PointerControl extends Component {
     updateSelectedWhenUp() {
         this.setState({selected: this.props.selected})
         const turn = this.getTurn()
-        let speed = (this.props.horizontal ? this.lastX - this.x : this.lastY - this.y) / (this.time - this.lastTime)
+        let speed = (
+            (this.props.direction === 'horizontal' ? this.lastX - this.x : this.lastY - this.y) /
+            (this.time - this.lastTime)
+        )
         if (this.props.reverse) {
             speed *= -1
         }
@@ -56,32 +59,31 @@ class PointerControl extends Component {
             }
         }
         selected = Math.max(selected, 0)
-        selected = Math.min(selected, this.props.children.length - 1)
+        selected = Math.min(selected, Children.count(this.props.children) - 1)
         const {onSelectedChange} = this.props
-        if (onSelectedChange instanceof Function) {
+        if (onSelectedChange) {
             onSelectedChange(selected)
         }
     }
 
     handlePointerDown = event => {
         const {onPointerDown, onSwipeStart} = this.props
-        if (onPointerDown instanceof Function) {
+        if (!this.down && this.state.selected === this.props.selected && onSwipeStart(event)) {
+            this.setState({down: true})
+            this.startSelected = this.state.selected
+            this.id = event.pointerId
+            this.x = event.clientX
+            this.startX = this.x
+            this.lastX = this.x
+            this.y = event.clientY
+            this.startY = this.y
+            this.lastY = this.y
+            this.time = event.timeStamp
+            this.lastTime = this.time
+        }
+        if (onPointerDown) {
             onPointerDown(event)
         }
-        if (this.down || this.state.selected !== this.props.selected || !onSwipeStart(event)) {
-            return
-        }
-        this.setState({down: true})
-        this.startSelected = this.state.selected
-        this.id = event.pointerId
-        this.x = event.clientX
-        this.startX = this.x
-        this.lastX = this.x
-        this.y = event.clientY
-        this.startY = this.y
-        this.lastY = this.y
-        this.time = event.timeStamp
-        this.lastTime = this.time
     }
 
     handlePointerMove = event => {
@@ -141,39 +143,37 @@ class PointerControl extends Component {
             swipeLength,
             thresholdSpeed,
             ...otherProps} = this.props
-        const FlippingPages = cloneElement(flippingPages, {
+            return cloneElement(flippingPages, {
             animationDuration: this.state.down ? 0 : this.props.animationDuration,
             className: classNames(style.flippingPages, className),
             onPointerDown: this.handlePointerDown,
             selected: this.state.selected,
             ...otherProps
         })
-        return FlippingPages
     }
 
-}
+    static propTypes = {
+        animationDuration: PropTypes.number,
+        direction: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
+        flippingPages: PropTypes.element.isRequired,
+        onOverSwipe: PropTypes.func,
+        onSelectedChange: PropTypes.func,
+        onSwipeStart: PropTypes.func,
+        reverse: PropTypes.bool,
+        selected: PropTypes.number.isRequired,
+        swipeLength: PropTypes.number,
+        thresholdSpeed: PropTypes.number,
+    }
 
-PointerControl.propTypes = {
-    animationDuration: PropTypes.number,
-    flippingPages: PropTypes.element.isRequired,
-    horizontal: PropTypes.bool,
-    onOverSwipe: PropTypes.func,
-    onSelectedChange: PropTypes.func,
-    onSwipeStart: PropTypes.func,
-    reverse: PropTypes.bool,
-    selected: PropTypes.number,
-    swipeLength: PropTypes.number,
-    thresholdSpeed: PropTypes.number,
-}
+    static defaultProps = {
+        animationDuration: 500,
+        onOverSwipe: swipe => swipe / 4,
+        onSwipeStart: event => event.isPrimary,
+        reverse: false,
+        swipeLength: 500,
+        thresholdSpeed: 0.1,
+    }
 
-PointerControl.defaultProps = {
-    animationDuration: 400,
-    horizontal: false,
-    onOverSwipe: swipe => swipe / 4,
-    onSwipeStart: event => event.isPrimary,
-    reverse: false,
-    swipeLength: 400,
-    thresholdSpeed: 0.1,
 }
 
 export default PointerControl

@@ -10,7 +10,7 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.sass$/,
                 use: [
                     'style-loader',
                     {
@@ -20,6 +20,7 @@ const config = {
                             localIdentName: '[local]-[hash:base64:4]',
                         },
                     },
+                    'sass-loader',
                 ],
             }, {
                 test: /\.js$/,

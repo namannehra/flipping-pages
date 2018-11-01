@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import {cloneElement, Component} from 'react'
+import {cloneElement, PureComponent} from 'react'
 
-class Animated extends Component {
+class Animated extends PureComponent {
 
     state = {
         selected: this.props.selected
@@ -17,7 +17,10 @@ class Animated extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.animationDuration !== prevProps.animationDuration || this.props.selected !== prevProps.selected) {
+        if (
+            this.props.animationDuration !== prevProps.animationDuration ||
+            this.props.selected !== prevProps.selected
+        ) {
             cancelAnimationFrame(this.id)
             this.startSelected = this.state.selected
             this.startTime = 0
@@ -50,27 +53,27 @@ class Animated extends Component {
     }
 
     render() {
-        const {animationDuration, flippingPages, onTurn, selected, ...otherProps} = this.props
-        const FlippingPages = cloneElement(flippingPages, {
+        const {animationDuration, flippingPages, onTurn, selected, willChange, ...otherProps} = this.props
+        return cloneElement(flippingPages, {
             selected: this.state.selected,
+            willChange: this.state.selected === selected ? willChange : true,
             ...otherProps
         })
-        return FlippingPages
     }
 
-}
+    static propTypes = {
+        animationDuration: PropTypes.number,
+        flippingPages: PropTypes.element.isRequired,
+        onTurn: PropTypes.func,
+        selected: PropTypes.number,
+        willChange: PropTypes.bool,
+    }
 
-Animated.propTypes = {
-    animationDuration: PropTypes.number,
-    flippingPages: PropTypes.element.isRequired,
-    horizontal: PropTypes.bool,
-    onTurn: PropTypes.func,
-    selected: PropTypes.number,
-}
+    static defaultProps = {
+        animationDuration: 500,
+        willChange: false,
+    }
 
-Animated.defaultProps = {
-    animationDuration: 400,
-    horizontal: false,
 }
 
 export default Animated

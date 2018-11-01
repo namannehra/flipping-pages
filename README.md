@@ -19,11 +19,11 @@ npm install flipping-pages
 ## Usage
 
 ```javascript
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import FlippingPages from 'flipping-pages'
 import 'flipping-pages/FlippingPages.css' // IMPORTANT
 
-class App extends Component {
+class App extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -36,12 +36,13 @@ class App extends Component {
     }
     render() {
         const flippingPagesStyle = {
-            height: 512,
-            width: 512,
-            perspective: 1024,
+            height: 500,
+            width: 500,
+            perspective: 1000,
         }
         return (
             <FlippingPages
+                direction="horizontal"
                 style={flippingPagesStyle}
                 selected={this.state.selected}
                 onSelectedChange={this.handleSelectedChange}
@@ -61,8 +62,8 @@ export default App
 
 | Name                | Type     | Default                    | Required |
 |---------------------|----------|----------------------------|----------|
-| `animationDuration` | `number` | `400`                      |          |
-| `horizontal`        | `bool`   | `false`                    |          |
+| `animationDuration` | `number` | `500`                      |          |
+| `direction`         | `string` |                            | YES      |
 | `onOverSwipe`       | `func`   | `overSwpie => swpie / 4`   |          |
 | `onSelectedChange`  | `func`   |                            |          |
 | `onSwipeStart`      | `func`   | `event => event.isPrimary` |          |
@@ -71,15 +72,14 @@ export default App
 | `rootRef`           | `object` |                            |          |
 | `selected`          | `number` |                            | YES      |
 | `shadowBackground`  | `string` | `rgba(0,0,0,0.25)`         |          |
-| `swipeLength`       | `number` | `400`                      |          |
+| `swipeLength`       | `number` | `500`                      |          |
 | `thresholdSpeed`    | `number` | `0.1`                      |          |
-| `willChange`        | `bool`   | `false`                    |          |
 
 ### `animationDuration`
 Time in milliseconds for one page turn.
 
-### `horizontal`
-Enable horizontal mode.
+### `direction`
+`horizontal` or `vertical`.
 
 ### `onOverSwipe(overSwpie) => swipe`
 Called when user swipes back on the first page or forword on the last page.
@@ -101,7 +101,7 @@ Called everytime page turns. Can be used to check when turning animation is
 complete. Animation will be complete when `turn` is equal to `selected` `prop`.
 
 ### `reverse`
-Reverse the order of pages. Can be used with `horizontal` set to `true` for
+Reverses the direction page turn. Can be used with horizontal direction for
 right to left languages.
 
 ### `rootRef`
@@ -120,10 +120,6 @@ The distance in pixels user must swipe to completely turn a page.
 ### `thresholdSpeed`
 Minimum speed in pixels per milliseconds to register a swipe.
 
-### `willChange`
-Applies CSS `will-change` on rotating element.
-[Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change)
-
 ## Notes
 
 * You need to include a polyfill for this to work in browsers that don't
@@ -134,7 +130,8 @@ Applies CSS `will-change` on rotating element.
   [Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select)
 
 * You should set CSS `perspective` property for 3D effect when pages turn. Value
-  double of element's height (width if `horizontal` is `true`) is recomended.
+  double of element's height (width if `direction` is `horizontal`) is
+  recomended.
   [Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/perspective)
 
 ## Limitations

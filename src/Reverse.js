@@ -1,28 +1,22 @@
 import PropTypes from 'prop-types'
-import {cloneElement, Component} from 'react'
+import {Children, cloneElement, memo} from 'react'
 
-class Reverse extends Component {
-
-    render() {
-        const {children, flippingPages, reverse, selected, ...otherProps} = this.props
-        const FlippingPages = cloneElement(flippingPages, {
-            selected: reverse ? children.length - selected - 1 : selected,
-            ...otherProps
-        }, reverse ? children.concat().reverse() : children)
-        return FlippingPages
-    }
-
-}
+const Reverse = memo(props => {
+    const {children, flippingPages, reverse, selected, ...otherProps} = props
+    const childrenArray = Children.toArray(children)
+    return cloneElement(flippingPages, {
+        selected: reverse ? childrenArray.length - selected - 1 : selected,
+        ...otherProps
+    }, reverse ? childrenArray.reverse() : childrenArray)
+})
 
 Reverse.propTypes = {
     flippingPages: PropTypes.element.isRequired,
-    horizontal: PropTypes.bool,
     reverse: PropTypes.bool,
-    selected: PropTypes.number,
+    selected: PropTypes.number.isRequired,
 }
 
 Reverse.defaultProps = {
-    horizontal: false,
     reverse: false,
 }
 

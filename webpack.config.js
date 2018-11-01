@@ -28,13 +28,12 @@ const config = {
     output: {
         filename: 'FlippingPages.js',
         path: resolve(__dirname, 'build/flipping-pages'),
-        library: 'flipping-pages',
         libraryTarget: 'umd',
     },
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.sass$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -43,6 +42,7 @@ const config = {
                             modules: true,
                         },
                     },
+                    'sass-loader',
                 ],
             }, {
                 test: /\.js$/,
@@ -55,6 +55,7 @@ const config = {
     optimization: {
         minimizer: [
             new OptimizeCSSAssetsPlugin(),
+            new MinifyPlugin({}, {comments: false}),
         ]
     },
     plugins: [
@@ -62,7 +63,6 @@ const config = {
         new MiniCssExtractPlugin({
             filename: 'FlippingPages.css',
         }),
-        new MinifyPlugin({}, {comments: false}),
         new GenerateJsonPlugin('package.json', buildJson),
         new CopyWebpackPlugin([
             'LICENSE',
