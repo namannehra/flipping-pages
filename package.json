@@ -6,6 +6,7 @@
     "author": "Naman Nehra <naman.nehra98@gmail.com>",
     "browser": "FlippingPages.js",
     "repository": "github:namannehra/flipping-pages",
+    "private": true,
     "scripts": {
         "start": "webpack-dev-server --config webpack.demo.dev.js --hot",
         "build": "webpack --config webpack.demo.prod.js",

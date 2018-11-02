@@ -8,13 +8,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const path = require('path')
 
-const originalJson = require('./package.json')
-
-const {scripts, devDependencies, ...buildJson} = originalJson
+const packageJson = require('./package.json')
+delete packageJson.private
+delete packageJson.scripts
+delete packageJson.devDependencies
 
 const externals = {}
 
-for (const name of Object.keys(Object.assign({}, buildJson.dependencies, buildJson.peerDependencies))) {
+for (const name of Object.keys(Object.assign({}, packageJson.dependencies, packageJson.peerDependencies))) {
     externals[name] = name
 }
 
@@ -59,7 +60,7 @@ const config = {
         new MiniCssExtractPlugin({
             filename: 'FlippingPages.css',
         }),
-        new GenerateJsonPlugin('package.json', buildJson),
+        new GenerateJsonPlugin('package.json', packageJson),
         new CopyWebpackPlugin([
             'LICENSE',
             'README.md',
