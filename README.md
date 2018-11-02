@@ -81,24 +81,24 @@ export default App
 | `thresholdSpeed`    | `number` | `0.1`                      |          |
 
 ### `animationDuration`
-Time in milliseconds for one page turn.
+Time in milliseconds for one page turn. Set to `0` to disable animation.
 
 ### `direction`
 `horizontal` or `vertical`.
 
 ### `onOverSwipe(overSwpie) => swipe`
-Called when user swipes back on the first page or forword on the last page.
+Called when the user swipes back on the first page or forword on the last page.
 `overSwpie` is a number between `0` (not included) and `1`. Return value should
-be a number between `0` and `1`. Page is turned based on that value.
+be a number between `0` and `1`. Turning is throttled based return value.
 
 ### `onSelectedChange(selected) => void`
-Called when user tries to turn the page. `selected` is the page index user tried
-to turn to.
+Called when the user tries to turn the page by swiping. `selected` is the page
+index user tried to turn to.
 
 ### `onSwipeStart(event) => shouldSwipe`
-Called when user starts to turn the page. `event` is a `pointer-start` event.
-Return false if you don't want to start turning for this event. Can be used to
-disable swiping for certain pointer types like mouse.
+Called when the user taps. `event` is a `pointerdown` event. Turning starts only
+if returned value is `true`. Can be used to disable swiping for certain pointer
+types like mouse or completely disable swiping.
 [Read more](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
 
 ### `onTurn(turn) => void`
@@ -117,7 +117,8 @@ Index of the page to be displayed.
 
 ### `shadowBackground`
 Pages have a shadow when they turn. Shadow has `0` opacity when page is resting
-and `1` opacity half turned. This prop is the CSS shadowBackground for shadow.
+and `1` opacity half turned. This `prop` is the `CSS` `background` for the
+shadow.
 
 ### `swipeLength`
 The distance in pixels user must swipe to completely turn a page.
