@@ -6,7 +6,7 @@ React component for flipping book pages animation
 
 ## Warning
 
-Turning by swiping is only supported in browsers that suppoet pointer events.
+Turning by swiping is only supported in browsers that support pointer events.
 [Check support](https://caniuse.com/#feat=pointer)
 
 ## Installation
