@@ -4,6 +4,11 @@ React component for flipping book pages animation
 
 [Demo](https://namannehra.github.io/flipping-pages/)
 
+## Warning
+
+Turning by swiping is only supported in browsers that suppoet pointer events.
+[Check support](https://caniuse.com/#feat=pointer)
+
 ## Installation
 
 ```
@@ -121,9 +126,6 @@ The distance in pixels user must swipe to completely turn a page.
 Minimum speed in pixels per milliseconds to register a swipe.
 
 ## Notes
-
-* You need to include a polyfill for this to work in browsers that don't
-  support pointer events. [Read more](https://github.com/jquery/PEP)
 
 * You should set CSS `user-select` property to `none` so text and images don't
   get selected when user drags with mouse.

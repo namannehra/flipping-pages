@@ -101,8 +101,6 @@ class App extends PureComponent {
                         className={style.flippingPages}
                         style={{perspective}}
                         onSelectedChange={this.handleFlippingPagesSelectedChange}
-                        /* https://github.com/jquery/PEP#touch-action */
-                        touch-action="none"
                         {...flippingPagesProps}
                     >
                         {pages}
