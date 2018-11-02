@@ -177,6 +177,7 @@ class App extends PureComponent {
                         <input
                             type="number"
                             min="0"
+                            step="0.1"
                             value={this.state.thresholdSpeed}
                             onChange={this.handleThresholdSpeedChange}
                             />
