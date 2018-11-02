@@ -1,18 +1,18 @@
 'use strict'
 
+const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const {resolve} = require('path')
+const path = require('path')
 
 const config = {
     mode: 'production',
     entry: './demo/index.js',
     output: {
         filename: '[contenthash].js',
-        path: resolve(__dirname, 'build/demo'),
+        path: path.resolve(__dirname, 'build/demo'),
     },
     module: {
         rules: [
@@ -40,7 +40,7 @@ const config = {
     },
     resolve: {
         alias: {
-            'flipping-pages': resolve(__dirname, './src/FlippingPages'),
+            'flipping-pages': path.resolve(__dirname, './src/FlippingPages'),
         },
     },
     optimization: {

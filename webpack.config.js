@@ -1,12 +1,12 @@
 'use strict'
 
+const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const GenerateJsonPlugin = require('generate-json-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const {resolve} = require('path')
+const path = require('path')
 
 const originalJson = require('./package.json')
 
@@ -15,11 +15,7 @@ const {scripts, devDependencies, ...buildJson} = originalJson
 const externals = {}
 
 for (const name of Object.keys(Object.assign({}, buildJson.dependencies, buildJson.peerDependencies))) {
-    externals[name] = {
-        commonjs: name,
-        commonjs2: name,
-        amd: name,
-    }
+    externals[name] = name
 }
 
 const config = {
@@ -27,7 +23,7 @@ const config = {
     entry: './src/FlippingPages.js',
     output: {
         filename: 'FlippingPages.js',
-        path: resolve(__dirname, 'build/flipping-pages'),
+        path: path.resolve(__dirname, 'build/flipping-pages'),
         libraryTarget: 'umd',
     },
     module: {

@@ -1,7 +1,7 @@
 'use strict'
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const {resolve} = require('path')
+const path = require('path')
 
 const config = {
     mode: 'development',
@@ -34,7 +34,7 @@ const config = {
     },
     resolve: {
         alias: {
-            'flipping-pages': resolve(__dirname, './src/FlippingPages'),
+            'flipping-pages': path.resolve(__dirname, './src/FlippingPages'),
         },
     },
     plugins: [
