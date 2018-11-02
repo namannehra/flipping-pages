@@ -7,7 +7,7 @@
     "browser": "FlippingPages.js",
     "repository": "github:namannehra/flipping-pages",
     "scripts": {
-        "start": "webpack-dev-server --config webpack.demo.dev.js",
+        "start": "webpack-dev-server --config webpack.demo.dev.js --hot",
         "build": "webpack --config webpack.demo.prod.js",
         "build-package": "webpack",
         "serve": "serve -l 8080 build/demo"
