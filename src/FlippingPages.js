@@ -8,7 +8,7 @@ import Reverse from './Reverse'
 const FlippingPages = memo(props => {
     const {children, ...otherProps} = props
     return (
-        <PointerControl direction="horizontal" selected={0} flippingPages={
+        <PointerControl flippingPages={
             <Animated selected={0} flippingPages={
                 <Reverse selected={0} flippingPages={
                     <Core direction="horizontal" selected={0}/>

@@ -65,7 +65,7 @@ class Animated extends PureComponent {
         animationDuration: PropTypes.number,
         flippingPages: PropTypes.element.isRequired,
         onTurn: PropTypes.func,
-        selected: PropTypes.number,
+        selected: PropTypes.number.isRequired,
         willChange: PropTypes.bool,
     }
 
