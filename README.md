@@ -21,46 +21,107 @@ or
 npm install flipping-pages
 ```
 
-## Usage
+## Example
+
+With [react-react-app](https://github.com/facebook/create-react-app)
+
+### `App.js`
 
 ```javascript
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import FlippingPages from 'flipping-pages'
-import 'flipping-pages/FlippingPages.css' // IMPORTANT
+/* IMPORTANT */
+import 'flipping-pages/FlippingPages.css'
 
-class App extends PureComponent {
+import './App.css'
+
+class App extends Component {
+
     constructor(props) {
         super(props)
+        this.totalPages = 4
         this.state = {
             selected: 0,
         }
         this.handleSelectedChange = this.handleSelectedChange.bind(this)
+        this.previous = this.previous.bind(this)
+        this.next = this.next.bind(this)
     }
+
     handleSelectedChange(selected) {
         this.setState({selected})
     }
+
+    previous() {
+        this.setState(state => ({
+            selected: (state.selected - 1 + this.totalPages) % this.totalPages
+        }))
+    }
+
+    next() {
+        this.setState(state => ({
+            selected: (state.selected + 1) % this.totalPages
+        }))
+    }
+
     render() {
-        const flippingPagesStyle = {
-            height: 500,
-            width: 500,
-            perspective: 1000,
-        }
         return (
-            <FlippingPages
-                direction="horizontal"
-                style={flippingPagesStyle}
-                selected={this.state.selected}
-                onSelectedChange={this.handleSelectedChange}
-            >
-                <div>page 1</div>
-                <div>page 2</div>
-                <div>page 3</div>
-            </FlippingPages>
+            <div className="App">
+                <FlippingPages
+                    className="App-pages"
+                    selected={this.state.selected}
+                    onSelectedChange={this.handleSelectedChange}
+                >
+                    <div className="App-page App-page_red">0</div>
+                    <div className="App-page App-page_green">1</div>
+                    <div className="App-page App-page_blue">2</div>
+                    <div className="App-page App-page_orange">3</div>
+                </FlippingPages>
+                {/* Buttons for browsers that don't support turning by swiping */}
+                <button onClick={this.previous}>Previous</button>
+                <button onClick={this.next}>Next</button>
+            </div>
         )
     }
+
 }
 
 export default App
+```
+
+### `App.css`
+
+```css
+.App-pages {
+    height: 480px;
+    width: 480px;
+    perspective: 960px;
+}
+
+.App-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 64px;
+    height: 100%;
+}
+
+.App-page_red {
+    background: #f44336
+}
+
+.App-page_green {
+    background: #4caf50
+}
+
+.App-page_blue {
+    background: #2196f3
+}
+
+.App-page_orange {
+    background: #ff9800
+}
 ```
 
 ## Props
