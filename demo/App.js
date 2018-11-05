@@ -1,13 +1,20 @@
+import classNames from 'classnames'
 import FlippingPages from 'flipping-pages'
 import React, {PureComponent, createRef, StrictMode} from 'react'
 import {hot} from 'react-hot-loader'
 
 import style from './App.sass'
 
+const requestFullscreen = [
+    'requestFullscreen', 'webkitRequestFullScreen', 'mozRequestFullScreen', 'msRequestFullscreen'
+].find(requestFullscreen => HTMLElement.prototype[requestFullscreen])
+
 class App extends PureComponent {
 
     constructor(props) {
         super(props)
+        this.totalPages = 4
+        this.flippingPagesContainer = createRef()
         this.flippingPages = createRef()
         const {onOverSwipe, onSwipeStart, ...otherDefaultProps} = FlippingPages.defaultProps
         this.state = Object.assign({
@@ -27,18 +34,24 @@ class App extends PureComponent {
         this.setPerspective(this.state.direction)
     }
 
+    previous = () => {
+        this.setState(state => ({
+            selected: (state.selected - 1 + this.totalPages) % this.totalPages
+        }))
+    }
+
+    next = () => {
+        this.setState(state => ({
+            selected: (state.selected + 1) % this.totalPages
+        }))
+    }
+
     handleFullScreen = () => {
-        const flippingPagesEle = this.flippingPages.current
-        let request
-        if (flippingPagesEle.requestFullScreen) {
-            request = flippingPagesEle.requestFullScreen()
-        } else if (flippingPagesEle.webkitRequestFullScreen) {
-            request = flippingPagesEle.webkitRequestFullScreen()
-        } else if (flippingPagesEle.mozRequestFullScreen) {
-            request = flippingPagesEle.mozRequestFullScreen()
-        }
+        const request = this.flippingPagesContainer.current[requestFullscreen]()
         if (request) {
             request.then(this.updatePerspective)
+        } else {
+            this.updatePerspective()
         }
     }
 
@@ -87,15 +100,9 @@ class App extends PureComponent {
 
     render() {
         const {perspective, ...flippingPagesProps} = this.state
-        const pages = Array(5).fill().map((_, index) => {
-            const image = require(`./img/${index}.svg`)
-            return (
-                <div key={index} className={style.page} style={{backgroundImage: `url(${image})`}}></div>
-            )
-        })
         return (
             <StrictMode>
-                <div className={style.flippingPagesContainer}>
+                <div ref={this.flippingPagesContainer} className={style.flippingPagesContainer}>
                     <FlippingPages
                         rootRef={this.flippingPages}
                         className={style.flippingPages}
@@ -103,13 +110,20 @@ class App extends PureComponent {
                         onSelectedChange={this.handleFlippingPagesSelectedChange}
                         {...flippingPagesProps}
                     >
-                        {pages}
+                        <div className={classNames(style.page, style.red)}>0</div>
+                        <div className={classNames(style.page, style.green)}>1</div>
+                        <div className={classNames(style.page, style.blue)}>2</div>
+                        <div className={classNames(style.page, style.orange)}>3</div>
                     </FlippingPages>
+                    <div className={style.navigation}>
+                        <button onClick={this.previous}>Previous</button>
+                        <button onClick={this.next}>Next</button>
+                    </div>
                 </div>
                 <div className={style.config}>
-                    <button onClick={this.handleFullScreen}>Full screen</button><br/><br/>
+                    <button onClick={this.handleFullScreen} disabled={!requestFullscreen}>Full screen</button><br/><br/>
                     <label>
-                        {'animationDuration: '}
+                        {'animationDuration '}
                         <input
                             type="number"
                             value={this.state.animationDuration}
@@ -148,21 +162,21 @@ class App extends PureComponent {
                         {' reverse'}
                     </label><br/><br/>
                     <label>
-                        {'selected: '}
+                        {'selected '}
                         <input
                             type="number"
                             min="0"
-                            max={pages.length - 1}
+                            max={this.totalPages - 1}
                             value={this.state.selected}
                             onChange={this.handleSelectedChange}
                         />
                     </label><br/><br/>
                     <label>
-                        {'shadowBackground: '}
+                        {'shadowBackground '}
                         <input value={this.state.shadowBackground} onChange={this.handleShadowBackgroundChange}/>
                     </label><br/><br/>
                     <label>
-                        {'swipeLength: '}
+                        {'swipeLength '}
                         <input
                             type="number"
                             min="0"
@@ -171,7 +185,7 @@ class App extends PureComponent {
                         />
                     </label><br/><br/>
                     <label>
-                        {'thresholdSpeed: '}
+                        {'thresholdSpeed '}
                         <input
                             type="number"
                             min="0"
