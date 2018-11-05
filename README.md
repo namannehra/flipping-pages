@@ -77,7 +77,8 @@ class App extends Component {
                     <div className="App-page App-page_blue">2</div>
                     <div className="App-page App-page_orange">3</div>
                 </FlippingPages>
-                {/* Buttons for browsers that don't support turning by swiping */}
+                {/* Buttons for browsers that don't support turning by
+                    swiping */}
                 <button onClick={this.previous}>Previous</button>
                 <button onClick={this.next}>Next</button>
             </div>
