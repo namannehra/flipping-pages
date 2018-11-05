@@ -60,7 +60,7 @@ const config = {
         new MiniCssExtractPlugin({
             filename: 'FlippingPages.css',
         }),
-        new GenerateJsonPlugin('package.json', packageJson),
+        new GenerateJsonPlugin('package.json', packageJson, undefined, 4),
         new CopyWebpackPlugin([
             'LICENSE',
             'README.md',
