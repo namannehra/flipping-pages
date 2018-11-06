@@ -205,8 +205,8 @@ Minimum speed in pixels per milliseconds to register a swipe.
 Web platform doesn't provide a way to bend an element in half. To achive this
 effect, this component renders the page to be displayed twice. First time, the
 last half of the page is hidden. Second time, the first half of the page is
-hidden in one time and hind the second half other time. Then these halfs are
-rotated independently. So if a page has state and that state is changed in first
-render then there is no way to sync that changes to the second render. The same
-is true for uncontrolled components. So this component can only be used for
-static and stateless content.
+hidden. Then these halfs are rotated independently. So if a page has state and
+that state is changed in one render then there is no way to sync that change to
+the other render. The same is true for uncontrolled components. So unless you
+have a way to sync state, this component can only be used for static and
+stateless content.
