@@ -4,41 +4,33 @@ html
 body
     height: 100%
     margin: 0
-    overflow: hidden
 
 \:global #App
-    display: flex
-    box-sizing: border-box
     height: 100%
-    padding: 8px
-
-    @media (orientation: portrait)
-        flex-direction: column
 
 .flippingPagesContainer
-    flex-grow: 1
-    flex-basis: 0
-    min-width: 50%
-    min-height: 50%
-    position: relative
+    display: flex
+    flex-direction: column
+    align-items: center
+    box-sizing: border-box
+    height: calc(100% - 24px)
+    padding: 16px
+    max-height: 640px
 
 .flippingPages
-    height: 100%
+    flex-grow: 1
     width: 100%
+    max-width: 480px
     user-select: none
-
-.navigation
-    position: absolute
-    right: 0
-    bottom: 0
-    left: 0
 
 .page
     display: flex
+    flex-direction: column
+    border-radius: 4px
     align-items: center
     justify-content: center
     color: white
-    font-size: 64px
+    font-size: 36px
     height: 100%
 
 .page.red
@@ -53,15 +45,18 @@ body
 .page.orange
     background: #ff9800
 
+.navigation
+    display: flex
+    justify-content: space-between
+    width: 100%
+    max-width: 480px
+
+    button
+        width: calc(50% - 8px)
+
 .config
     font-family: monospace, monospace
-    overflow: auto
-
-    @media (orientation: portrait)
-        padding-top: 8px
-
-    @media (orientation: landscape)
-        padding-left: 8px
+    padding: 16px
 
     input
         font-family: inherit

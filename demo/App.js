@@ -5,16 +5,11 @@ import {hot} from 'react-hot-loader'
 
 import style from './App.sass'
 
-const requestFullscreen = [
-    'requestFullscreen', 'webkitRequestFullScreen', 'mozRequestFullScreen', 'msRequestFullscreen'
-].find(requestFullscreen => HTMLElement.prototype[requestFullscreen])
-
 class App extends PureComponent {
 
     constructor(props) {
         super(props)
         this.totalPages = 4
-        this.flippingPagesContainer = createRef()
         this.flippingPages = createRef()
         const {onOverSwipe, onSwipeStart, ...otherDefaultProps} = FlippingPages.defaultProps
         this.state = Object.assign({
@@ -36,23 +31,14 @@ class App extends PureComponent {
 
     previous = () => {
         this.setState(state => ({
-            selected: (state.selected - 1 + this.totalPages) % this.totalPages
+            selected: state.selected - 1
         }))
     }
 
     next = () => {
         this.setState(state => ({
-            selected: (state.selected + 1) % this.totalPages
+            selected: state.selected + 1
         }))
-    }
-
-    handleFullScreen = () => {
-        const request = this.flippingPagesContainer.current[requestFullscreen]()
-        if (request) {
-            request.then(this.updatePerspective)
-        } else {
-            this.updatePerspective()
-        }
     }
 
     handleAnimationDurationChange = event => {
@@ -102,7 +88,7 @@ class App extends PureComponent {
         const {perspective, ...flippingPagesProps} = this.state
         return (
             <StrictMode>
-                <div ref={this.flippingPagesContainer} className={style.flippingPagesContainer}>
+                <div className={style.flippingPagesContainer}>
                     <FlippingPages
                         rootRef={this.flippingPages}
                         className={style.flippingPages}
@@ -110,18 +96,20 @@ class App extends PureComponent {
                         onSelectedChange={this.handleFlippingPagesSelectedChange}
                         {...flippingPagesProps}
                     >
-                        <div className={classNames(style.page, style.red)}>0</div>
-                        <div className={classNames(style.page, style.green)}>1</div>
-                        <div className={classNames(style.page, style.blue)}>2</div>
-                        <div className={classNames(style.page, style.orange)}>3</div>
-                    </FlippingPages>
+                        <div className={classNames(style.page, style.red)}>
+                            First page<br/>
+                            Swipe to turn
+                        </div>
+                        <div className={classNames(style.page, style.green)}>2nd page</div>
+                        <div className={classNames(style.page, style.blue)}>3rd page</div>
+                        <div className={classNames(style.page, style.orange)}>Last page</div>
+                    </FlippingPages><br></br>
                     <div className={style.navigation}>
-                        <button onClick={this.previous}>Previous</button>
-                        <button onClick={this.next}>Next</button>
+                        <button onClick={this.previous} disabled={!this.state.selected}>Previous</button>
+                        <button onClick={this.next} disabled={this.state.selected + 1 === this.totalPages}>Next</button>
                     </div>
                 </div>
                 <div className={style.config}>
-                    <button onClick={this.handleFullScreen} disabled={!requestFullscreen}>Full screen</button><br/><br/>
                     <label>
                         {'animationDuration '}
                         <input
