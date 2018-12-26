@@ -122,19 +122,19 @@ export default App
 }
 
 .App-page_red {
-    background: #f44336
+    background: #f44336;
 }
 
 .App-page_green {
-    background: #4caf50
+    background: #4caf50;
 }
 
 .App-page_blue {
-    background: #2196f3
+    background: #2196f3;
 }
 
 .App-page_orange {
-    background: #ff9800
+    background: #ff9800;
 }
 ```
 
