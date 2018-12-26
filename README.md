@@ -4,11 +4,6 @@ React component for flipping book pages animation
 
 [Demo](https://namannehra.github.io/flipping-pages/)
 
-## Warning
-
-Turning by swiping is only supported in browsers that support pointer events.
-[Check support](https://caniuse.com/#feat=pointer)
-
 ## Installation
 
 ```
@@ -24,6 +19,13 @@ npm install flipping-pages
 ## Example
 
 With [react-react-app](https://github.com/facebook/create-react-app)
+
+### `index.html`
+
+```html
+<!-- Pointer events polyfill for Safari -->
+<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+```
 
 ### `App.js`
 
@@ -54,13 +56,13 @@ class App extends Component {
 
     previous() {
         this.setState(state => ({
-            selected: (state.selected - 1 + this.totalPages) % this.totalPages
+            selected: state.selected - 1
         }))
     }
 
     next() {
         this.setState(state => ({
-            selected: (state.selected + 1) % this.totalPages
+            selected: state.selected + 1
         }))
     }
 
@@ -71,16 +73,24 @@ class App extends Component {
                     className="App-pages"
                     selected={this.state.selected}
                     onSelectedChange={this.handleSelectedChange}
+                    /* touch-action attribute is required by pointer events
+                    polyfill */
+                    touch-action="none"
                 >
                     <div className="App-page App-page_red">0</div>
                     <div className="App-page App-page_green">1</div>
                     <div className="App-page App-page_blue">2</div>
                     <div className="App-page App-page_orange">3</div>
                 </FlippingPages>
-                {/* Buttons for browsers that don't support turning by
-                    swiping */}
-                <button onClick={this.previous}>Previous</button>
-                <button onClick={this.next}>Next</button>
+                {/* Buttons are required for keyboard navigation */}
+                <button
+                    onClick={this.previous}
+                    disabled={!this.state.selected}
+                >Previous</button>
+                <button
+                    onClick={this.next}
+                    disabled={this.state.selected + 1 === this.totalPages}
+                >Next</button>
             </div>
         )
     }
@@ -97,14 +107,11 @@ export default App
     height: 480px;
     width: 480px;
     perspective: 960px;
+    user-select: none
 }
 
 .App-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: white;
-    font-size: 64px;
     height: 100%;
 }
 

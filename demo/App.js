@@ -94,6 +94,7 @@ class App extends PureComponent {
                         className={style.flippingPages}
                         style={{perspective}}
                         onSelectedChange={this.handleFlippingPagesSelectedChange}
+                        touch-action="none"
                         {...flippingPagesProps}
                     >
                         <div className={classNames(style.page, style.red)}>
