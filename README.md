@@ -23,8 +23,8 @@ With [react-react-app](https://github.com/facebook/create-react-app)
 ### `index.html`
 
 ```html
-<!-- Pointer events polyfill for Safari -->
     ...
+    <!-- Pointer events polyfill for Safari -->
     <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
 </head>
 ...
