@@ -155,22 +155,22 @@ Time in milliseconds for one page turn. Set to `0` to disable animation.
 ### `direction`
 `horizontal` or `vertical`.
 
-### `onOverSwipe(overSwpie) => swipe`
+### `onOverSwipe: (overSwpie) => swipe`
 Called when the user swipes back on the first page or forword on the last page.
 `overSwpie` is a number between `0` (not included) and `1`. Return value should
 be a number between `0` and `1`. Turning is throttled based return value.
 
-### `onSelectedChange(selected) => void`
+### `onSelectedChange: (selected) => void`
 Called when the user tries to turn the page by swiping. `selected` is the page
 index user tried to turn to.
 
-### `onSwipeStart(event) => shouldSwipe`
+### `onSwipeStart: (event) => shouldSwipe`
 Called when the user taps. `event` is a `pointerdown` event. Turning starts only
 if returned value is `true`. Can be used to disable swiping for certain pointer
 types like mouse or completely disable swiping.
 [Read more](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
 
-### `onTurn(turn) => void`
+### `onTurn: (turn) => void`
 Called everytime page turns. Can be used to check when turning animation is
 complete. Animation will be complete when `turn` is equal to `selected` `prop`.
 
