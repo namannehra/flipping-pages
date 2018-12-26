@@ -1,12 +1,21 @@
 .Core
     position: relative
 
-.left, .right, .top, .bottom
+.curr, .left, .right, .top, .bottom
     position: absolute
     overflow: hidden
 
+.left, .right, .top, .bottom
+    pointer-events: none
+
     > div
         position: absolute
+
+.curr
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
 
 .left, .right
     width: 50%
@@ -55,11 +64,3 @@
 
     > div
         bottom: 0
-
-.shadow
-    position: absolute
-    top: 0
-    right: 0
-    bottom: 0
-    left: 0
-    pointer-events: none

@@ -11,18 +11,19 @@ class Core extends PureComponent {
         if (turn < 0) {
             turn++
         }
+        if (turn >= 0.5) {
+            turn--
+        }
+        turn *= 2
         return turn
     }
 
     getRotation(direction, turn) {
-        return (turn < 0.5 ? turn : turn - 1) * (direction === 'horizontal' ? -180 : 180)
+        return turn * (direction === 'horizontal' ? -90 : 90)
     }
 
-    getCurrClassName(direction, turn) {
-        if (direction === 'horizontal') {
-            return turn < 0.5 ? 'right' : 'left'
-        }
-        return turn < 0.5 ? 'bottom' : 'top'
+    getTransform(direction, turn) {
+        return `rotate${direction === 'horizontal' ? 'Y' : 'X'}(${this.getRotation(direction, turn)}deg)`
     }
 
     render() {
@@ -30,39 +31,88 @@ class Core extends PureComponent {
             children, className, direction, rootRef, selected, shadowBackground, willChange, ...otherProps
         } = this.props
         const childrenArray = Children.toArray(children)
-        const prev = childrenArray[Math.floor(selected)]
-        const next = childrenArray[Math.floor(selected + 1)]
         const curr = childrenArray[Math.round(selected)]
+        const prev = childrenArray[Math.round(selected) - 1]
+        const next = childrenArray[Math.round(selected) + 1]
         const turn = this.getTurn(selected)
-        const rotation = this.getRotation(direction, turn)
-        const currStyle = {
-            transform: `rotate${direction === 'horizontal' ? 'Y' : 'X'}(${rotation}deg)`,
-        }
-        const shadowStyle = {
+        const currStyle = {}
+        const prevStyle = {}
+        const prevCurrStyle = {}
+        const prevShadowStyle = {
             background: shadowBackground,
-            opacity: (turn < 0.5 ? turn : (1 - turn)) * 2,
+        }
+        const nextStyle = {}
+        const nextCurrStyle = {}
+        const nextShadowStyle = {
+            background: shadowBackground,
+        }
+        if (turn < 0) {
+            currStyle.opacity = 0
+            prevCurrStyle.transform = this.getTransform(direction, turn)
+            prevShadowStyle.opacity = -turn
+            nextShadowStyle.opacity = 0
+        } else if (turn > 0) {
+            currStyle.opacity = 0
+            nextCurrStyle.transform = this.getTransform(direction, turn)
+            nextShadowStyle.opacity = turn
+            prevShadowStyle.opacity = 0
+        } else {
+            prevStyle.visibility = 'hidden'
+            prevCurrStyle.visibility = 'hidden'
+            nextStyle.visibility = 'hidden'
+            nextCurrStyle.visibility = 'hidden'
         }
         if (willChange) {
-            currStyle.willChange = 'transform'
-            shadowStyle.willChange = 'opacity'
+            currStyle.willChange = 'opacity'
+            prevStyle.willChange = 'visibility'
+            prevCurrStyle.willChange = 'visibility, transform'
+            prevShadowStyle.willChange = 'opacity'
+            nextStyle.willChange = 'visibility'
+            nextCurrStyle.willChange = 'visibility, transform'
+            nextShadowStyle.willChange = 'opacity'
         }
         return (
             <div ref={rootRef} className={classNames(style.Core, className)} {...otherProps}>
-                <div className={style[direction === 'horizontal' ? 'left' : 'top']}>
-                    <div>
+                <div className={style.curr} style={currStyle}>
+                    {curr}
+                </div>
+                <div
+                    className={style[direction === 'horizontal' ? 'left' : 'top']}
+                    style={prevStyle}
+                    aria-hidden="true"
+                >
+                    <div className={style.clipper}>
                         {prev}
                     </div>
                 </div>
-                <div className={style[direction === 'horizontal' ? 'right' : 'bottom']}>
-                    <div>
+                <div
+                    className={style[direction === 'horizontal' ? 'left' : 'top']}
+                    style={prevCurrStyle}
+                    aria-hidden="true"
+                >
+                    <div className={style.clipper}>
+                        {curr}
+                    </div>
+                    <div className={style.shadow} style={prevShadowStyle}></div>
+                </div>
+                <div
+                    className={style[direction === 'horizontal' ? 'right' : 'bottom']}
+                    style={nextStyle}
+                    aria-hidden="true"
+                >
+                    <div className={style.clipper}>
                         {next}
                     </div>
                 </div>
-                <div className={style[this.getCurrClassName(direction, turn)]} style={currStyle}>
-                    <div>
+                <div
+                    className={style[direction === 'horizontal' ? 'right' : 'bottom']}
+                    style={nextCurrStyle}
+                    aria-hidden="true"
+                >
+                    <div className={style.clipper}>
                         {curr}
-                        <div className={style.shadow} style={shadowStyle}></div>
                     </div>
+                    <div className={style.shadow} style={nextShadowStyle}></div>
                 </div>
             </div>
         )
