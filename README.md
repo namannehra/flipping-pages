@@ -24,7 +24,10 @@ With [react-react-app](https://github.com/facebook/create-react-app)
 
 ```html
 <!-- Pointer events polyfill for Safari -->
-<script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+    ...
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
+...
 ```
 
 ### `App.js`
@@ -107,7 +110,10 @@ export default App
     height: 480px;
     width: 480px;
     perspective: 960px;
-    user-select: none
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .App-page {
