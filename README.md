@@ -129,7 +129,7 @@ export default App
 
 | Name                | Type     | Default                    | Required |
 |---------------------|----------|----------------------------|----------|
-| `animationDuration` | `number` | `500`                      |          |
+| `animationDuration` | `number` | `400`                      |          |
 | `direction`         | `string` |                            | YES      |
 | `onOverSwipe`       | `func`   | `overSwpie => swpie / 4`   |          |
 | `onSelectedChange`  | `func`   |                            |          |
@@ -139,7 +139,7 @@ export default App
 | `rootRef`           | `object` |                            |          |
 | `selected`          | `number` |                            | YES      |
 | `shadowBackground`  | `string` | `rgba(0,0,0,0.25)`         |          |
-| `swipeLength`       | `number` | `500`                      |          |
+| `swipeLength`       | `number` | `400`                      |          |
 | `thresholdSpeed`    | `number` | `0.1`                      |          |
 
 ### `animationDuration`

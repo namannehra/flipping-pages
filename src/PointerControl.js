@@ -168,11 +168,11 @@ class PointerControl extends PureComponent {
     }
 
     static defaultProps = {
-        animationDuration: 500,
+        animationDuration: 400,
         onOverSwipe: swipe => swipe / 4,
         onSwipeStart: event => event.isPrimary,
         reverse: false,
-        swipeLength: 500,
+        swipeLength: 400,
         thresholdSpeed: 0.1,
     }
 
