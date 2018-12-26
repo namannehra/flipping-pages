@@ -104,7 +104,7 @@ class App extends PureComponent {
                         <div className={classNames(style.page, style.green)}>2nd page</div>
                         <div className={classNames(style.page, style.blue)}>3rd page</div>
                         <div className={classNames(style.page, style.orange)}>Last page</div>
-                    </FlippingPages><br></br>
+                    </FlippingPages>
                     <div className={style.navigation}>
                         <button onClick={this.previous} disabled={!this.state.selected}>Previous</button>
                         <button onClick={this.next} disabled={this.state.selected + 1 === this.totalPages}>Next</button>

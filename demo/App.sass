@@ -13,7 +13,7 @@ body
     flex-direction: column
     align-items: center
     box-sizing: border-box
-    height: calc(100% - 24px)
+    height: calc(100% - 16px)
     padding: 16px
     max-height: 640px
 
@@ -21,6 +21,10 @@ body
     flex-grow: 1
     width: 100%
     max-width: 480px
+    user-select: none
+    -ms-user-select: none
+    -moz-user-select: none
+    -webkit-user-select: none
     user-select: none
 
 .page
@@ -50,13 +54,14 @@ body
     justify-content: space-between
     width: 100%
     max-width: 480px
+    margin-top: 8px
 
     button
-        width: calc(50% - 8px)
+        width: calc(50% - 4px)
 
 .config
     font-family: monospace, monospace
-    padding: 16px
+    padding: 0 16px 16px 16px
 
     input
         font-family: inherit
