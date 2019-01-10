@@ -74,6 +74,7 @@ class App extends Component {
             <div className="App">
                 <FlippingPages
                     className="App-pages"
+                    direction="horizontal"
                     selected={this.state.selected}
                     onSelectedChange={this.handleSelectedChange}
                     /* touch-action attribute is required by pointer events
