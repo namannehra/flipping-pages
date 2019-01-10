@@ -21,10 +21,9 @@
         "gestures"
     ],
     "license": "MIT",
+    "repository": "github:namannehra/flipping-pages",
     "author": "Naman Nehra <naman.nehra98@gmail.com>",
     "browser": "FlippingPages.js",
-    "repository": "github:namannehra/flipping-pages",
-    "private": true,
     "scripts": {
         "start": "webpack-dev-server --config webpack.demo.dev.js --hot",
         "build": "webpack --config webpack.demo.prod.js",
@@ -32,6 +31,7 @@
         "build-package": "webpack",
         "serve": "serve -l 8080 build/demo"
     },
+    "private": true,
     "dependencies": {
         "classnames": "^2.2.6",
         "prop-types": "^15.6.2"
@@ -44,7 +44,7 @@
         "@babel/plugin-proposal-class-properties": "^7.2.3",
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
-        "babel-loader": "^8.0.4",
+        "babel-loader": "^8.0.5",
         "babel-minify-webpack-plugin": "^0.3.1",
         "clean-webpack-plugin": "^1.0.0",
         "copy-webpack-plugin": "^4.6.0",
@@ -61,7 +61,7 @@
         "serve": "^10.1.1",
         "style-loader": "^0.23.1",
         "webpack": "^4.28.2",
-        "webpack-cli": "^3.1.2",
+        "webpack-cli": "^3.2.1",
         "webpack-dev-server": "^3.1.14"
     }
 }
