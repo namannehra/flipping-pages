@@ -24,7 +24,6 @@
     "repository": "github:namannehra/flipping-pages",
     "author": "Naman Nehra <naman.nehra98@gmail.com>",
     "main": "FlippingPages.js",
-    "browser": "FlippingPages.js",
     "scripts": {
         "start": "webpack-dev-server --config webpack.demo.dev.js --hot",
         "build": "webpack --config webpack.demo.prod.js",
