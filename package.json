@@ -26,9 +26,10 @@
     "main": "FlippingPages.js",
     "scripts": {
         "start": "webpack-dev-server --config webpack.demo.dev.js --hot",
-        "build": "webpack --config webpack.demo.prod.js",
-        "update-demo": "yarn build && (cd build/demo && git add -A && git commit -m 'Update demo' && git push)",
+        "build-demo": "webpack --config webpack.demo.prod.js",
+        "update-demo": "yarn build-demo && cd build/demo && git add -A && git commit -m 'Update demo' && git push",
         "build-package": "webpack",
+        "publish-package": "yarn build-package && cd build/flipping-pages && yarn publish",
         "serve": "serve -l 8080 build/demo"
     },
     "private": true,
