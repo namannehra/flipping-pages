@@ -1,11 +1,11 @@
 'use strict'
 
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const path = require('path')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const config = {
     mode: 'production',
@@ -43,7 +43,7 @@ const config = {
     optimization: {
         minimizer: [
             new OptimizeCSSAssetsPlugin(),
-            new MinifyPlugin({}, {comments: false}),
+            new TerserPlugin(),
         ]
     },
     plugins: [

@@ -1,12 +1,12 @@
 'use strict'
 
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const GenerateJsonPlugin = require('generate-json-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const path = require('path')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const packageJson = require('./package.json')
 delete packageJson.private
@@ -39,7 +39,14 @@ const config = {
                             modules: true,
                         },
                     },
-                    'sass-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sassOptions: {
+                                indentWidth: 4,
+                            },
+                        },
+                    },
                 ],
             }, {
                 test: /\.js$/,
@@ -52,7 +59,7 @@ const config = {
     optimization: {
         minimizer: [
             new OptimizeCSSAssetsPlugin(),
-            new MinifyPlugin({}, {comments: false}),
+            new TerserPlugin(),
         ]
     },
     plugins: [
@@ -61,10 +68,12 @@ const config = {
             filename: 'FlippingPages.css',
         }),
         new GenerateJsonPlugin('package.json', packageJson, undefined, 4),
-        new CopyWebpackPlugin([
-            'LICENSE',
-            'README.md',
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                'LICENSE',
+                'README.md',
+            ],
+        }),
     ],
 }
 
