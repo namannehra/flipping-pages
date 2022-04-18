@@ -11,11 +11,11 @@
     "scripts": {
         "build": "yarn check-all && vite build",
         "build-demo": "check-all && vite --config vite.demo.ts build",
-        "check-all": "yarn check-format && yarn lint && yarn tsc && yarn test",
+        "check-all": "yarn check-format && yarn lint && tsc && yarn test",
         "check-format": "prettier --check .",
         "dev": "vite --config vite.demo.ts",
         "format": "prettier --write .",
-        "lint": "yarn eslint --ignore-path .prettierignore --max-warnings 0 '**/*.{js,jsx,ts,tsx}'",
+        "lint": "eslint --ignore-path .prettierignore --max-warnings 0 '**/*.{js,jsx,ts,tsx}'",
         "preview": "vite --config vite.demo.ts preview",
         "test": "jest"
     },
