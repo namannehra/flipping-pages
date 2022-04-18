@@ -15,7 +15,7 @@
         "check-format": "prettier --check .",
         "dev": "vite --config vite.demo.ts",
         "format": "prettier --write .",
-        "lint": "yarn eslint --ignore-path .prettierignore '**/*.{js,jsx,ts,tsx}'",
+        "lint": "yarn eslint --ignore-path .prettierignore --max-warnings 0 '**/*.{js,jsx,ts,tsx}'",
         "preview": "vite --config vite.demo.ts preview",
         "test": "jest"
     },
