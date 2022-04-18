@@ -1,0 +1,91 @@
+.container {
+    height: 100%;
+}
+
+@media (min-width: 960px) {
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.demo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+    height: calc(100% - 64px);
+    min-height: 320px;
+    max-height: 640px;
+    width: 100%;
+    max-width: 480px;
+    padding: 16px;
+    margin: auto;
+}
+
+@media (min-width: 960px) {
+    .demo {
+        height: 100%;
+        padding: 32px;
+        margin: 0;
+    }
+}
+
+.flippingPages {
+    flex: 1 0;
+    height: 0;
+}
+
+.page1,
+.page2,
+.page3,
+.page4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gray-9);
+    color: var(--gray-0);
+    font-size: var(--font-size-fluid-3);
+    position: absolute;
+    inset: 0;
+}
+
+.page1 {
+    background-image: var(--gradient-1);
+}
+
+.page2 {
+    background-image: var(--gradient-2);
+}
+
+.page3 {
+    background-image: var(--gradient-3);
+}
+
+.page4 {
+    background-image: var(--gradient-4);
+}
+
+.prevAndNext {
+    display: flex;
+    gap: 16px;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 480px;
+    padding: 0 16px 16px 16px;
+    margin: auto;
+}
+
+@media (min-width: 960px) {
+    .controls {
+        padding: 32px 32px 32px 0;
+        margin: 0;
+        overflow-y: auto;
+    }
+}

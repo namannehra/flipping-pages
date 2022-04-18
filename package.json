@@ -1,68 +1,57 @@
 {
     "name": "flipping-pages",
-    "version": "2.1.3",
-    "description": "React component for flipping book pages animation",
-    "keywords": [
-        "react",
-        "component",
-        "flipping",
-        "flip",
-        "turning",
-        "turn",
-        "book",
-        "page",
-        "pages",
-        "animation",
-        "swipe",
-        "swiping",
-        "drag",
-        "draging",
-        "gesture",
-        "gestures"
-    ],
+    "version": "3.0.0-beta.0",
+    "description": "",
     "license": "MIT",
     "repository": "github:namannehra/flipping-pages",
     "author": "Naman Nehra <naman.nehra98@gmail.com>",
-    "main": "FlippingPages.js",
+    "main": "",
+    "module": "",
+    "types": "",
     "scripts": {
-        "start": "webpack-dev-server --config webpack.demo.dev.js --hot",
-        "build-demo": "webpack --config webpack.demo.prod.js",
-        "update-demo": "yarn build-demo && cd build/demo && git add -A && git commit -m 'Update demo' && git push",
-        "build-package": "webpack",
-        "publish-package": "yarn build-package && cd build/flipping-pages && yarn publish",
-        "serve": "serve -l 8080 build/demo"
-    },
-    "private": true,
-    "dependencies": {
-        "classnames": "^2.2.6",
-        "prop-types": "^15.6.2"
+        "build": "yarn check-all && vite build",
+        "build-demo": "check-all && vite --config vite.demo.ts build",
+        "check-all": "yarn check-format && yarn lint && yarn tsc && yarn test",
+        "check-format": "prettier --check .",
+        "dev": "vite --config vite.demo.ts",
+        "format": "prettier --write .",
+        "lint": "yarn eslint --ignore-path .prettierignore '**/*.{js,jsx,ts,tsx}'",
+        "preview": "vite --config vite.demo.ts preview",
+        "test": "jest"
     },
     "peerDependencies": {
-        "react": "^16.7.0"
+        "@types/react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
+    },
+    "dependencies": {
+        "classnames": "^2.3.1",
+        "react-merge-refs": "^1.1.0",
+        "use-resize-observer": "^8.0.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.2.2",
-        "@babel/plugin-proposal-class-properties": "^7.3.0",
-        "@babel/preset-env": "^7.3.1",
-        "@babel/preset-react": "^7.0.0",
-        "babel-loader": "^8.0.5",
-        "clean-webpack-plugin": "^1.0.1",
-        "copy-webpack-plugin": "^6.4.1",
-        "css-loader": "^2.1.0",
-        "generate-json-webpack-plugin": "^0.3.1",
-        "html-webpack-plugin": "^3.2.0",
-        "mini-css-extract-plugin": "^1.4.0",
-        "optimize-css-assets-webpack-plugin": "^5.0.1",
-        "react": "^16.7.0",
-        "react-dom": "^16.7.0",
-        "react-hot-loader": "^4.6.5",
-        "sass": "^1.32.8",
-        "sass-loader": "^10.1.1",
-        "serve": "^10.1.1",
-        "style-loader": "^2.0.0",
-        "terser-webpack-plugin": "^4.2.3",
-        "webpack": "^4.29.1",
-        "webpack-cli": "^3.2.3",
-        "webpack-dev-server": "^3.1.14"
+        "@babel/core": "^7.17.9",
+        "@babel/preset-env": "^7.16.11",
+        "@babel/preset-typescript": "^7.16.7",
+        "@types/jest": "^27.4.0",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "@typescript-eslint/eslint-plugin": "^5.19.0",
+        "@typescript-eslint/parser": "^5.19.0",
+        "@vitejs/plugin-react": "^1.3.0",
+        "eslint": "^8.13.0",
+        "eslint-plugin-react-hooks": "^4.4.0",
+        "jest": "^27.4.0",
+        "open-props": "^1.3.16",
+        "prettier": "2.6.2",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "typescript": "~4.6.3",
+        "vite": "^2.9.2",
+        "vite-tsconfig-paths": "^3.4.1"
     }
 }

@@ -1,0 +1,26 @@
+root: true
+env:
+    browser: true
+    node: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+    project:
+        - tsconfig.json
+        - tsconfig.node.json
+extends:
+    - eslint:recommended
+    - plugin:react-hooks/recommended
+    - plugin:@typescript-eslint/recommended
+    - plugin:@typescript-eslint/recommended-requiring-type-checking
+rules:
+    react-hooks/exhaustive-deps: error
+    react-hooks/rules-of-hooks: error
+overrides:
+    - files:
+          - '*.js'
+          - '*.jsx'
+      parserOptions:
+          sourceType: script
+      rules:
+          strict: error
+          '@typescript-eslint/no-var-requires': off

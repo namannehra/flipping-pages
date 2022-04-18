@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "exactOptionalPropertyTypes": true,
+        "forceConsistentCasingInFileNames": true,
+        "importsNotUsedAsValues": "remove",
+        "isolatedModules": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "noUncheckedIndexedAccess": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ESNext",
+        "useDefineForClassFields": true
+    }
+}
