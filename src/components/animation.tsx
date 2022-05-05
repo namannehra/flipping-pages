@@ -11,7 +11,7 @@ export interface FlippingPagesWithAnimationProps
     animationDuration?: number;
     onAnimationEnd?: () => void;
     onAnimationStart?: () => void;
-    onAnimationTick?: (selected: number) => void;
+    onAnimationTurn?: (selected: number) => void;
     willChange?: boolean | 'auto';
 }
 
@@ -20,7 +20,7 @@ export const defaultAnimationDuration = 400;
 const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => {
     const {
         animationDuration = defaultAnimationDuration,
-        onAnimationTick,
+        onAnimationTurn,
         onAnimationStart: _onAnimationStart,
         onAnimationEnd: _onAnimationEnd,
     } = props;
@@ -73,11 +73,11 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
                 return;
             }
             const newSelected = startSelectedRef.current + selectedChange;
-            onAnimationTick?.(newSelected);
+            onAnimationTurn?.(newSelected);
             setSelected(newSelected);
             rafIdRef.current = requestAnimationFrame(updateAnimation);
         },
-        [animationDuration, props.selected, setSelected, onAnimationEnd, onAnimationTick],
+        [animationDuration, props.selected, setSelected, onAnimationEnd, onAnimationTurn],
     );
 
     useEffect(() => {

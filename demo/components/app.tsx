@@ -13,7 +13,7 @@ import classes from './app.module.css';
 const _App = () => {
     const [animationDuration, setAnimationDuration] = useState(defaultAnimationDuration);
     const [animationRunning, setAnimationRunning] = useState(false);
-    const [animationTick, setAnimationTick] = useState<number>();
+    const [animationTurn, setAnimationTurn] = useState<number>();
     const [direction, setDirection] = useState<FlippingPagesDirection>('bottom-to-top');
     const [perspectiveMultiplier, setPerspectiveMultiplier] = useState(
         defaultPerspectiveMultiplier,
@@ -25,17 +25,17 @@ const _App = () => {
         setAnimationRunning(true);
     }, [setAnimationRunning]);
 
-    const handleAnimationTick = useCallback(
+    const handleAnimationTurn = useCallback(
         (selected: number) => {
-            setAnimationTick(selected);
+            setAnimationTurn(selected);
         },
-        [setAnimationTick],
+        [setAnimationTurn],
     );
 
     const handleAnimationEnd = useCallback(() => {
         setAnimationRunning(false);
-        setAnimationTick(undefined);
-    }, [setAnimationRunning, setAnimationTick]);
+        setAnimationTurn(undefined);
+    }, [setAnimationRunning, setAnimationTurn]);
 
     const prev = useCallback(() => {
         setSelected(selected => (selected > 0 ? selected - 1 : selected));
@@ -89,7 +89,7 @@ const _App = () => {
                         direction={direction}
                         onAnimationEnd={handleAnimationEnd}
                         onAnimationStart={handleAnimationStart}
-                        onAnimationTick={handleAnimationTick}
+                        onAnimationTurn={handleAnimationTurn}
                         perspectiveMultiplier={perspectiveMultiplier}
                         selected={selected}
                         shadowBackground={shadowBackground}
@@ -122,8 +122,8 @@ const _App = () => {
                     <input type="checkbox" checked={animationRunning} readOnly></input>
                 </label>
                 <label>
-                    {'Animation tick '}
-                    <input value={animationTick ?? ''} readOnly></input>
+                    {'Animation turn '}
+                    <input value={animationTurn ?? ''} readOnly></input>
                 </label>
                 <label>
                     {'Direction '}
