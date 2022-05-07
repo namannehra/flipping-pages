@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Children, ComponentType, HTMLAttributes, memo, ReactNode, Ref, useMemo } from 'react';
 
-import { getDefaultFlippingPagesShadow } from '~/components/default-shadow';
+import { getFlippingPagesShadow } from '~/components/shadow';
 import { FlippingPagesDirection, FlippingPagesShadowProps } from '~/types';
 import { getTurn } from '~/utils/turn';
 import { getTransform } from '~/utils/transform';
@@ -19,22 +19,14 @@ export interface FlippingPagesCoreProps {
     willChange?: boolean;
 }
 
-export const defaultShadowBackground = 'rgb(0, 0, 0, 0.25)';
-
 const _FlippingPagesCore = (props: FlippingPagesCoreProps) => {
-    const {
-        containerProps,
-        containerRef,
-        direction,
-        selected,
-        shadowBackground = defaultShadowBackground,
-    } = props;
+    const { containerProps, containerRef, direction, selected, shadowBackground } = props;
     const children = Children.toArray(props.children);
     const ShadowComponent = useMemo(
         () =>
             props.shadowComponent
                 ? props.shadowComponent
-                : getDefaultFlippingPagesShadow(shadowBackground),
+                : getFlippingPagesShadow(shadowBackground),
         [shadowBackground, props.shadowComponent],
     );
     const turn = getTurn(selected);
@@ -42,19 +34,34 @@ const _FlippingPagesCore = (props: FlippingPagesCoreProps) => {
 
     let pages: ReactNode;
     if (turn === 0) {
-        pages = children[selected];
+        // @todo Add explaination for wrapping in divs and add test
+        pages = (
+            <div className={classNames(classes.fullPage, classes[direction])}>
+                <div>{children[selected]}</div>
+            </div>
+        );
     } else {
         pages = (
             <>
-                <div className={classNames(classes.prevPage, classes[direction])}>
-                    <div>{children[Math.floor(selected)]}</div>
-                </div>
-                <div className={classNames(classes.nextPage, classes[direction])}>
-                    <div>{children[Math.ceil(selected)]}</div>
+                <div
+                    className={classNames(
+                        turn > 0 ? classes.prevPage : classes.nextPage,
+                        classes[direction],
+                    )}
+                >
+                    <div>{children[Math.round(selected)]}</div>
                 </div>
                 <div
                     className={classNames(
-                        turn < 0 ? classes.prevPage : classes.nextPage,
+                        turn > 0 ? classes.nextPage : classes.prevPage,
+                        classes[direction],
+                    )}
+                >
+                    <div>{children[turn > 0 ? Math.ceil(selected) : Math.floor(selected)]}</div>
+                </div>
+                <div
+                    className={classNames(
+                        turn > 0 ? classes.nextPage : classes.prevPage,
                         classes[direction],
                     )}
                     style={{
@@ -63,7 +70,7 @@ const _FlippingPagesCore = (props: FlippingPagesCoreProps) => {
                     }}
                 >
                     <div>{children[Math.round(selected)]}</div>
-                    <div>
+                    <div className={classes.shadow}>
                         <ShadowComponent
                             selected={selected}
                             willChange={willChange}

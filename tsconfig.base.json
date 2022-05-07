@@ -4,6 +4,7 @@
         "forceConsistentCasingInFileNames": true,
         "importsNotUsedAsValues": "remove",
         "isolatedModules": true,
+        "jsx": "react-jsx",
         "module": "ESNext",
         "moduleResolution": "Node",
         "noImplicitOverride": true,

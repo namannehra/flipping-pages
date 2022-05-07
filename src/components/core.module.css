@@ -4,13 +4,30 @@
     position: relative;
 }
 
+.fullPage,
 .prevPage,
 .nextPage {
     position: absolute;
 }
 
-:is(.prevPage, .nextPage) > * {
+:is(.fullPage, .prevPage, .nextPage):is(.bottom-to-top, .top-to-bottom) {
+    overflow-y: hidden;
+}
+
+:is(.fullPage, .prevPage, .nextPage):is(.left-to-right, .right-to-left) {
+    overflow-x: hidden;
+}
+
+:is(.fullPage, .prevPage, .nextPage) > * {
     position: absolute;
+}
+
+.fullPage {
+    inset: 0;
+}
+
+.fullPage > * {
+    inset: 0;
 }
 
 .prevPage.bottom-to-top,
@@ -19,11 +36,10 @@
     right: 0;
     left: 0;
     height: 50%;
-    overflow-y: hidden;
     transform-origin: bottom;
 }
 
-:is(.prevPage.bottom-to-top, .nextPage.top-to-bottom) > * {
+:is(.prevPage.bottom-to-top, .nextPage.top-to-bottom) > :first-child {
     top: 0;
     right: 0;
     left: 0;
@@ -36,11 +52,10 @@
     bottom: 0;
     left: 0;
     height: 50%;
-    overflow-y: hidden;
     transform-origin: top;
 }
 
-:is(.prevPage.top-to-bottom, .nextPage.bottom-to-top) > * {
+:is(.prevPage.top-to-bottom, .nextPage.bottom-to-top) > :first-child {
     right: 0;
     bottom: 0;
     left: 0;
@@ -53,11 +68,10 @@
     right: 0;
     bottom: 0;
     width: 50%;
-    overflow-x: hidden;
     transform-origin: left;
 }
 
-:is(.prevPage.left-to-right, .nextPage.right-to-left) > * {
+:is(.prevPage.left-to-right, .nextPage.right-to-left) > :first-child {
     top: 0;
     right: 0;
     bottom: 0;
@@ -70,13 +84,16 @@
     bottom: 0;
     left: 0;
     width: 50%;
-    overflow-x: hidden;
     transform-origin: right;
 }
 
-:is(.prevPage.right-to-left, .nextPage.left-to-right) > * {
+:is(.prevPage.right-to-left, .nextPage.left-to-right) > :first-child {
     top: 0;
     bottom: 0;
     left: 0;
     width: 200%;
+}
+
+.shadow {
+    inset: 0;
 }

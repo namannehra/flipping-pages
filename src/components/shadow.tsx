@@ -3,10 +3,12 @@ import { memo } from 'react';
 import { FlippingPagesShadowProps } from '~/types';
 import { getTurn } from '~/utils/turn';
 
-import classes from './default-shadow.module.css';
+import classes from './shadow.module.css';
 
-export const getDefaultFlippingPagesShadow = (background: string) => {
-    const _DefaultFlippingPagesShadow = (props: FlippingPagesShadowProps) => {
+export const defaultShadowBackground = 'rgb(0, 0, 0, 0.25)';
+
+export const getFlippingPagesShadow = (background: string = defaultShadowBackground) => {
+    const _FlippingPagesShadow = (props: FlippingPagesShadowProps) => {
         const { selected, willChange } = props;
 
         const turn = getTurn(selected);
@@ -23,5 +25,5 @@ export const getDefaultFlippingPagesShadow = (background: string) => {
         );
     };
 
-    return memo(_DefaultFlippingPagesShadow);
+    return memo(_FlippingPagesShadow);
 };

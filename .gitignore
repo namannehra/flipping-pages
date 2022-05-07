@@ -1,6 +1,7 @@
 /.vscode
-/demo-dist
 /dist
+/dist-demo
+/dist-types
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,yarn,linux,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,yarn,linux,macos,windows

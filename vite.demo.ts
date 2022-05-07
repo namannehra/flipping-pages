@@ -7,6 +7,6 @@ export default defineConfig({
     plugins: [react(), tsconfigPaths()],
     build: {
         target: 'es2021',
-        outDir: 'demo-dist',
+        outDir: 'dist-demo',
     },
 });

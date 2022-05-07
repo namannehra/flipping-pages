@@ -3,7 +3,6 @@
     "references": [{ "path": "./tsconfig.node.json" }],
     "include": ["src", "demo"],
     "compilerOptions": {
-        "jsx": "react-jsx",
         "lib": ["DOM", "ES2021"],
         "noEmit": true,
         "paths": { "~/*": ["./src/*"], "~demo/*": ["./demo/*"] }

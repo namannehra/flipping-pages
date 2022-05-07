@@ -1,11 +1,8 @@
 import { ChangeEventHandler, memo, useCallback, useState } from 'react';
 
-import { FlippingPagesDirection } from '~/.';
-import {
-    FlippingPagesWithAnimation as FlippingPages,
-    defaultAnimationDuration,
-} from '~/components/animation';
-import { defaultShadowBackground } from '~/components/core';
+import { FlippingPages, FlippingPagesDirection } from '~/.';
+import { defaultAnimationDuration } from '~/components/animation';
+import { defaultShadowBackground } from '~/components/shadow';
 import { defaultPerspectiveMultiplier } from '~/components/perspective';
 
 import classes from './app.module.css';

@@ -5,6 +5,7 @@ import {
     FlippingPagesWithPerspectiveProps,
 } from '~/components/perspective';
 import { useForceUpdate } from '~/hooks/force-update';
+import { removeUndefinedValues } from '~/utils/remove-undefined-values';
 
 export interface FlippingPagesWithAnimationProps
     extends Omit<FlippingPagesWithPerspectiveProps, 'willChange'> {
@@ -26,10 +27,12 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
     } = props;
 
     const [autoWillChange, setAutoWillChange] = useState(false);
-    const willChange = useMemo(
-        () => (typeof props.willChange === 'boolean' ? props.willChange : autoWillChange),
-        [props.willChange, autoWillChange],
-    );
+    const willChange = useMemo(() => {
+        if (typeof props.willChange === 'boolean') {
+            return props.willChange;
+        }
+        return autoWillChange ? true : undefined;
+    }, [props.willChange, autoWillChange]);
 
     const onAnimationStart = useCallback(() => {
         setAutoWillChange(true);
@@ -83,7 +86,6 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
     useEffect(() => {
         if (selectedRef.current === props.selected) {
             if (rafIdRef.current) {
-                cancelAnimationFrame(rafIdRef.current);
                 rafIdRef.current = undefined;
                 onAnimationEnd();
             }
@@ -91,21 +93,24 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
         }
         if (!animationDuration) {
             if (rafIdRef.current) {
-                cancelAnimationFrame(rafIdRef.current);
                 rafIdRef.current = undefined;
                 onAnimationEnd();
             }
             setSelected(props.selected);
             return;
         }
-        if (rafIdRef.current) {
-            cancelAnimationFrame(rafIdRef.current);
-        } else {
+        if (!rafIdRef.current) {
             onAnimationStart();
         }
         startTimeRef.current = undefined;
         startSelectedRef.current = selectedRef.current;
         rafIdRef.current = requestAnimationFrame(updateAnimation);
+        return () => {
+            // Call cancelAnimationFrame in clean-up to stop animation after unmount
+            if (rafIdRef.current) {
+                cancelAnimationFrame(rafIdRef.current);
+            }
+        };
     }, [
         animationDuration,
         onAnimationEnd,
@@ -117,9 +122,7 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
 
     return (
         <FlippingPagesWithPerspective
-            {...props}
-            selected={selectedRef.current}
-            willChange={willChange}
+            {...removeUndefinedValues({ ...props, selected: selectedRef.current, willChange })}
         ></FlippingPagesWithPerspective>
     );
 };
