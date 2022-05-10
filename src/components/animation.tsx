@@ -5,6 +5,7 @@ import {
     FlippingPagesWithPerspectiveProps,
 } from '~/components/perspective';
 import { useForceUpdate } from '~/hooks/force-update';
+import { useRaf, UseRafCallback } from '~/hooks/raf';
 import { removeUndefinedValues } from '~/utils/remove-undefined-values';
 
 export interface FlippingPagesWithAnimationProps
@@ -45,78 +46,63 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
     }, [_onAnimationEnd, setAutoWillChange]);
 
     const forceUpdate = useForceUpdate();
-    const rafIdRef = useRef<number>();
-    const startTimeRef = useRef<number>();
+    const animationRunningRef = useRef(false);
     const startSelectedRef = useRef(props.selected);
     const selectedRef = useRef(props.selected);
 
-    const setSelected = useCallback(
-        (selected: number) => {
-            selectedRef.current = selected;
-            forceUpdate();
-        },
-        [forceUpdate],
-    );
-
-    const updateAnimation = useCallback(
-        (timestamp: number) => {
-            if (!startTimeRef.current) {
-                startTimeRef.current = timestamp;
-                rafIdRef.current = requestAnimationFrame(updateAnimation);
-                return;
-            }
+    const updateAnimation: UseRafCallback = useCallback(
+        (timeElapsed: number) => {
             const maxSelectedChange = props.selected - startSelectedRef.current;
-            const selectedChange =
-                (Math.sign(maxSelectedChange) * (timestamp - startTimeRef.current)) /
-                animationDuration;
+            const selectedChange = (Math.sign(maxSelectedChange) * timeElapsed) / animationDuration;
             if (Math.abs(selectedChange) >= Math.abs(maxSelectedChange)) {
-                rafIdRef.current = undefined;
-                setSelected(props.selected);
+                selectedRef.current = props.selected;
+                animationRunningRef.current = false;
                 onAnimationEnd();
-                return;
+                return true;
             }
             const newSelected = startSelectedRef.current + selectedChange;
             onAnimationTurn?.(newSelected);
-            setSelected(newSelected);
-            rafIdRef.current = requestAnimationFrame(updateAnimation);
+            selectedRef.current = newSelected;
+            return false;
         },
-        [animationDuration, props.selected, setSelected, onAnimationEnd, onAnimationTurn],
+        [animationDuration, onAnimationEnd, onAnimationTurn, props.selected],
     );
+
+    const { start, stop } = useRaf(updateAnimation);
 
     useEffect(() => {
         if (selectedRef.current === props.selected) {
-            if (rafIdRef.current) {
-                rafIdRef.current = undefined;
+            if (animationRunningRef.current) {
+                animationRunningRef.current = false;
+                stop();
                 onAnimationEnd();
             }
             return;
         }
         if (!animationDuration) {
-            if (rafIdRef.current) {
-                rafIdRef.current = undefined;
+            if (animationRunningRef.current) {
+                animationRunningRef.current = false;
+                stop();
                 onAnimationEnd();
             }
-            setSelected(props.selected);
+            selectedRef.current = props.selected;
+            forceUpdate();
             return;
         }
-        if (!rafIdRef.current) {
+        if (!animationRunningRef.current) {
+            animationRunningRef.current = true;
             onAnimationStart();
         }
-        startTimeRef.current = undefined;
         startSelectedRef.current = selectedRef.current;
-        rafIdRef.current = requestAnimationFrame(updateAnimation);
-        return () => {
-            // Call cancelAnimationFrame in clean-up to stop animation after unmount
-            if (rafIdRef.current) {
-                cancelAnimationFrame(rafIdRef.current);
-            }
-        };
+        start();
     }, [
         animationDuration,
+        forceUpdate,
         onAnimationEnd,
         onAnimationStart,
         props.selected,
-        setSelected,
+        start,
+        stop,
         updateAnimation,
     ]);
 
