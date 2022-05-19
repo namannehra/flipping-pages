@@ -11,13 +11,13 @@ Supported React versions: `^16.14.0 || ^17.0.0 || ^18.0.0`
 ## NPM
 
 ```
-npm install flipping-pages
+npm install flipping-pages@beta
 ```
 
 ## Yarn
 
 ```
-yarn add flipping-pages
+yarn add flipping-pages@beta
 ```
 
 # Example
