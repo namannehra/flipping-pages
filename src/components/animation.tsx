@@ -73,17 +73,13 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
 
     useEffect(() => {
         if (selected === props.selected) {
-            if (animationRunning) {
-                stop();
-                setAnimationRunning(false);
-            }
+            stop();
+            setAnimationRunning(false);
             return;
         }
         if (!animationDuration) {
-            if (animationRunning) {
-                stop();
-                setAnimationRunning(false);
-            }
+            stop();
+            setAnimationRunning(false);
             setSelected(props.selected);
             return;
         }
