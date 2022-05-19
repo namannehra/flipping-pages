@@ -2,6 +2,17 @@ React component for flipping book pages animation
 
 [Demo](https://namannehra.github.io/flipping-pages/)
 
+# Try out v3
+
+I'm looking for feedback on version 3. New feature include:
+
+-   Support for TypeScript
+-   Support for React 18
+-   More configurable API
+-   Published as ES module
+
+Try it out at https://github.com/namannehra/flipping-pages/tree/v3
+
 # Installation
 
 ```
