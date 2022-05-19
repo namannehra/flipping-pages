@@ -1,8 +1,7 @@
 {
     "name": "flipping-pages",
     "version": "3.0.0-beta.0",
-    "description": "",
-    "keywords": [],
+    "description": "React component for flipping book pages animation",
     "license": "MIT",
     "repository": "github:namannehra/flipping-pages",
     "author": "Naman Nehra <naman.nehra98@gmail.com>",
