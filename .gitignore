@@ -1,3 +1,7 @@
-node_modules/
-build/
+/.vscode
+/build
+/dist
+/dist-demo
+/dist-types
+/node_modules
 *.log
