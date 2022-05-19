@@ -272,3 +272,7 @@ rotated independently to achieve the page turning effect.
 
 If a child component has internal state then that **state will not be synced** between both the page
 renders. The same also applies to uncontrolled components.
+
+# Hire me
+
+I'm looking for a full time job as a front end web dev. Email me at naman6469@pm.me.
