@@ -2,7 +2,7 @@ React component for flipping book pages animation
 
 # Demo
 
-https://namannehra.github.io/flipping-pages/
+https://namannehra.github.io/flipping-pages/v3/
 
 # Installation
 
