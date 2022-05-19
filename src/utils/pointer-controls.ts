@@ -5,7 +5,7 @@ export interface GetCurrSelectedOptions {
     diffX: number;
     diffY: number;
     direction: FlippingPagesDirection;
-    onOverSwipe: (overSwpie: number) => number;
+    onOverSwipe: (overSwipe: number) => number;
     startSelected: number;
     swipeLength: number;
 }

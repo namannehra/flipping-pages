@@ -24,7 +24,7 @@ import { getCurrSelected, getNextSelected } from '~/utils/pointer-controls';
 
 export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWithAnimationProps {
     disableSwipe?: boolean | undefined;
-    onOverSwipe?: ((overSwpie: number) => number) | undefined;
+    onOverSwipe?: ((overSwipe: number) => number) | undefined;
     onSwipeEnd?: ((selected: number) => void) | undefined;
     onSwipeStart?: ((event: PointerEvent<HTMLDivElement>) => boolean) | undefined;
     onSwipeTurn?: ((selected: number) => void) | undefined;
@@ -33,7 +33,7 @@ export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWith
 }
 
 export const defaultSwipeLength = 400;
-const defaultOnOverSwipe = (overSwpie: number) => overSwpie / 4;
+const defaultOnOverSwipe = (overSwipe: number) => overSwipe / 4;
 export const defaultOnSwipeStart = (event: PointerEvent<HTMLDivElement>) => event.isPrimary;
 export const defaultSwipeSpeed = 0.1;
 
