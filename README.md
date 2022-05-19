@@ -219,9 +219,9 @@ height (width if `direction` is `horizontal`) is recommended.
 ## State is not synced
 
 The web platform doesn't have a way to bend an element in half. To achieve this effect, this
-component renders each page twice. For the first render, only the first half of the page is
-visible. For the second render, only the last half of the page is visible. Then these halves are
-rotated independently to achieve the page turning effect.
+component renders each page twice. For the first render, only the first half of the page is visible.
+For the second render, only the last half of the page is visible. Then these halves are rotated
+independently to achieve the page turning effect.
 
 If a child component has internal state then that **state will not be synced** between both the page
 renders. The same also applies to uncontrolled components.
