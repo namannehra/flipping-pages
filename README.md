@@ -1,228 +1,274 @@
-# flipping-pages
-
 React component for flipping book pages animation
 
-[Demo](https://namannehra.github.io/flipping-pages/)
+# Demo
 
-## Installation
+https://namannehra.github.io/flipping-pages/
 
-```
-yarn add flipping-pages
-```
+# Installation
 
-or
+Supported React versions: `^16.14.0 || ^17.0.0 || ^18.0.0`
+
+## NPM
 
 ```
 npm install flipping-pages
 ```
 
-## Example
+## Yarn
 
-With [react-react-app](https://github.com/facebook/create-react-app)
-
-### `index.html`
-
-```html
-    ...
-    <!-- Pointer events polyfill for Safari -->
-    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-</head>
-...
+```
+yarn add flipping-pages
 ```
 
-### `App.js`
+# Example
+
+## `App.js`
 
 ```javascript
-import React, { Component } from 'react';
-import FlippingPages from 'flipping-pages';
-/* IMPORTANT */
-import 'flipping-pages/FlippingPages.css';
+import { FlippingPages } from 'flipping-pages';
+import 'flipping-pages/dist/style.css';
+import { useState } from 'react';
 
 import './App.css';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.totalPages = 4;
-        this.state = {
-            selected: 0,
-        };
-        this.handleSelectedChange = this.handleSelectedChange.bind(this);
-        this.previous = this.previous.bind(this);
-        this.next = this.next.bind(this);
-    }
+const App = () => {
+    const [selected, setSelected] = useState(0);
 
-    handleSelectedChange(selected) {
-        this.setState({ selected });
-    }
+    const back = () => {
+        setSelected(selected => Math.max(selected - 1, 0));
+    };
 
-    previous() {
-        this.setState(state => ({
-            selected: state.selected - 1,
-        }));
-    }
+    const next = () => {
+        setSelected(selected => Math.min(selected + 1, 2));
+    };
 
-    next() {
-        this.setState(state => ({
-            selected: state.selected + 1,
-        }));
-    }
-
-    render() {
-        return (
-            <div className="App">
+    return (
+        <div>
+            <div className="pages">
                 <FlippingPages
-                    className="App-pages"
-                    direction="horizontal"
-                    selected={this.state.selected}
-                    onSelectedChange={this.handleSelectedChange}
-                    /* touch-action attribute is required by pointer events
-                    polyfill */
-                    touch-action="none"
+                    direction="bottom-to-top"
+                    onSwipeEnd={setSelected}
+                    selected={selected}
                 >
-                    <div className="App-page App-page_red">0</div>
-                    <div className="App-page App-page_green">1</div>
-                    <div className="App-page App-page_blue">2</div>
-                    <div className="App-page App-page_orange">3</div>
+                    <div className="page page1">Page 1</div>
+                    <div className="page page2">Page 2</div>
+                    <div className="page page3">Page 3</div>
                 </FlippingPages>
-                {/* Buttons are required for keyboard navigation */}
-                <button onClick={this.previous} disabled={!this.state.selected}>
-                    Previous
-                </button>
-                <button onClick={this.next} disabled={this.state.selected + 1 === this.totalPages}>
-                    Next
-                </button>
             </div>
-        );
-    }
-}
+            <button onClick={back}>Back</button>
+            <button onClick={next}>Next</button>
+        </div>
+    );
+};
 
 export default App;
 ```
 
-### `App.css`
+## `App.css`
 
 ```css
-.App-pages {
-    height: 480px;
-    width: 480px;
-    perspective: 960px;
-    -ms-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
+.pages {
+    height: 256px;
+    width: 256px;
 }
 
-.App-page {
-    color: white;
+.page {
     height: 100%;
+    width: 100%;
 }
 
-.App-page_red {
-    background: #f44336;
+.page1 {
+    background-color: pink;
 }
 
-.App-page_green {
-    background: #4caf50;
+.page2 {
+    background-color: yellow;
 }
 
-.App-page_blue {
-    background: #2196f3;
-}
-
-.App-page_orange {
-    background: #ff9800;
+.page3 {
+    background-color: aqua;
 }
 ```
 
-## Props
+# Props
 
-| Name                | Type     | Default                    | Required |
-| ------------------- | -------- | -------------------------- | -------- |
-| `animationDuration` | `number` | `400`                      |          |
-| `direction`         | `string` |                            | YES      |
-| `onOverSwipe`       | `func`   | `overSwpie => swpie / 4`   |          |
-| `onSelectedChange`  | `func`   |                            |          |
-| `onSwipeStart`      | `func`   | `event => event.isPrimary` |          |
-| `onTurn`            | `func`   |                            |          |
-| `reverse`           | `bool`   | `false`                    |          |
-| `rootRef`           | `object` |                            |          |
-| `selected`          | `number` |                            | YES      |
-| `shadowBackground`  | `string` | `rgba(0,0,0,0.25)`         |          |
-| `swipeLength`       | `number` | `400`                      |          |
-| `thresholdSpeed`    | `number` | `0.1`                      |          |
+| Name (\* = Required)    | Type                                                                       | Default                      |
+| ----------------------- | -------------------------------------------------------------------------- | ---------------------------- |
+| `animationDuration`     | `number`                                                                   | `400`                        |
+| `children`              | `ReactNode`                                                                |                              |
+| `containerProps`        | `HTMLAttributes<HTMLDivElement>`                                           |                              |
+| `containerRef`          | `Ref<HTMLDivElement>`                                                      |                              |
+| `direction`\*           | `'bottom-to-top' \| 'top-to-bottom' \| 'left-to-right' \| 'right-to-left'` |                              |
+| `disableSwipe`          | `boolean`                                                                  | `false`                      |
+| `onAnimationEnd`        | `() => void`                                                               |                              |
+| `onAnimationStart`      | `() => void`                                                               |                              |
+| `onAnimationTurn`       | `(selected: number) => void`                                               |                              |
+| `onOverSwipe`           | `(overSwipe: number) => number`                                            | `overSwipe => overSwipe / 4` |
+| `onSwipeEnd`            | `(selected: number) => void`                                               |                              |
+| `onSwipeStart`          | `(event: PointerEvent<HTMLDivElement>) => boolean`                         | `event => event.isPrimary`   |
+| `onSwipeTurn`           | `(selected: number) => void`                                               |                              |
+| `perspectiveMultiplier` | `number`                                                                   | `2`                          |
+| `selected`\*            | `number`                                                                   |                              |
+| `shadowBackground`      | `string`                                                                   | `rgb(0, 0, 0, 0.25)`         |
+| `shadowComponent`       | `Component<ShadowProps>`                                                   |                              |
+| `swipeLength`           | `number`                                                                   | `400`                        |
+| `swipeSpeed`            | `number`                                                                   | `0.1`                        |
+| `willChange`            | `boolean \| 'auto'`                                                        | `'auto'`                     |
 
-### `animationDuration`
+## `animationDuration`
+
+`number`
 
 Time in milliseconds for one page turn. Set to `0` to disable animation.
 
-### `direction`
+## `children`
 
-`horizontal` or `vertical`.
+`ReactNode`
 
-### `onOverSwipe: (overSwpie) => swipe`
+Each child is rendered on a separate page.
 
-Called when the user swipes back on the first page or forward on the last page. `overSwpie` is a
-number between `0` (not included) and `1`. Return value should be a number between `0` and `1`.
-Turning is throttled based return value.
+## `containerProps`
 
-### `onSelectedChange: (selected) => void`
+`HTMLAttributes<HTMLDivElement>`
 
-Called when the user tries to turn the page by swiping. `selected` is the page index user tried to
-turn to.
+Props passed to the root element.
 
-### `onSwipeStart: (event) => shouldSwipe`
+## `containerRef`
 
-Called when the user taps. `event` is a `pointerdown` event. Turning starts only if returned value
-is `true`. Can be used to disable swiping for certain pointer types like mouse or completely disable
-swiping. [Read more](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
+Ref for the root element.
 
-### `onTurn: (turn) => void`
+## `direction`\*
 
-Called every time page turns. Can be used to check when turning animation is complete. Animation
-will be complete when `turn` is equal to `selected` `prop`.
+`'bottom-to-top' | 'top-to-bottom' | 'left-to-right' | 'right-to-left'`
 
-### `reverse`
+Direction of page turn.
 
-Reverses the direction page turn. Can be used with horizontal direction for right to left languages.
+## `disableSwipe`
 
-### `rootRef`
+`boolean`
 
-`ref` to the root element.
+Disables page turning by swiping.
 
-### `selected`
+## `onAnimationEnd`
 
-Index of the page to be displayed.
+`() => void`
 
-### `shadowBackground`
+Called after page turning animation ends.
 
-Pages have a shadow when they turn. Shadow has `0` opacity when page is resting and `1` opacity half
-turned. This `prop` is the `CSS` `background` for the shadow.
+## `onAnimationStart`
 
-### `swipeLength`
+`() => void`
 
-The distance in pixels user must swipe to completely turn a page.
+Called after page turning animation starts.
 
-### `thresholdSpeed`
+## `onAnimationTurn`
 
-Minimum speed in pixels per milliseconds to register a swipe.
+`(selected: number) => void`
 
-## Notes
+Called on each tick of page turning animation. `selected` is the page index in decimal. Uses
+[`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame).
 
--   You should set CSS `user-select` property to `none` so text and images don't get selected when
-    user drags with mouse. [Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select)
+## `onOverSwipe`
 
--   You should set CSS `perspective` property for 3D effect when pages turn. Value double of
-    element's height (width if `direction` is `horizontal`) is recommended.
-    [Read more](https://developer.mozilla.org/en-US/docs/Web/CSS/perspective)
+`(overSwipe: number) => number`
 
-## Limitations
+Called when swiping back on the first page or next on the last page. `overSwipe` is between `0` and
+`1`. Return value determines how page turning is throttled.
 
-### No states or uncontrolled components
+## `onSwipeEnd`
 
-Web platform doesn't provide a way to bend an element in half. To achieve this effect, this
-component renders the page to be displayed twice. First time, the last half of the page is hidden.
-Second time, the first half of the page is hidden. Then these halves are rotated independently. So
-if a page has state and that state is changed in one render then there is no way to sync that change
-to the other render. The same is true for uncontrolled components. So unless you have a way to sync
-state, this component can only be used for static and stateless content.
+`(selected: number) => void`
+
+Called after swiping ends. `selected` is the page index to which user swiped.
+
+## `onSwipeStart`
+
+`(event: PointerEvent<HTMLDivElement>) => boolean`
+
+Called before swipe starts. `event` is a
+[`pointerdown`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/pointerdown_event)
+event. Swipe starts only if `true` is returned. This can be used to disable swiping for certain
+pointer types like mouse.
+
+## `onSwipeTurn`
+
+`(selected: number) => void`
+
+Called on each tick of swipe turn. `selected` is the page index in decimal.
+
+## `perspectiveMultiplier`
+
+`number`
+
+Value of CSS [`perspective`](https://developer.mozilla.org/en-US/docs/Web/CSS/perspective) is
+calculated by multiplying `perspectiveMultiplier` with the size of the root element. Size is height
+or width depending on `direction`. `perspective` can be set manually using
+`containerProps.style.perspective`.
+
+## `selected`\*
+
+`number`
+
+Index of the current page. Decimal values are supported.
+
+## `shadowBackground`
+
+`string`
+
+Pages have a shadow when they are turning. Shadow has `0` opacity when page is resting and `1`
+opacity when page is half turned. `shadowBackground` is used for CSS `background` of the shadow
+element.
+
+## `shadowComponent`
+
+`Component<ShadowProps>`
+
+### `ShadowProps`
+
+| Name (\* = Required) | Type      |
+| -------------------- | --------- |
+| `selected`\*         | `number`  |
+| `willChange`\*       | `boolean` |
+
+Component to use as page shadow.
+
+## `swipeLength`
+
+`number`
+
+The distance in pixels user must swipe to completely one page turn.
+
+## `swipeSpeed`
+
+`number`
+
+Minimum speed in pixels per milliseconds to turn the page after a swipe.
+
+## `willChange`
+
+`boolean | 'auto'`
+
+Sets CSS [`will-change`](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change) on turning
+page and shadow. If `'auto'` then `will-change` is applied during turning animation and swiping.
+
+# Notes
+
+## `user-select`
+
+You can set CSS [`user-select`](https://developer.mozilla.org/en-US/docs/Web/CSS/user-select) to
+prevent text selection when swiping using a mouse.
+
+## `touch-action`
+
+You can set CSS [`touch-action`](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) to
+prevent page scrolling when swiping using a touch screen.
+
+## State is not synced
+
+The web platform doesn't have a way to bend an element in half. To achieve this effect, this
+component renders the each page twice. For the first render, only the first half of the page is
+visible. For the second render, only the last half of the page is visible. Then these halves are
+rotated independently to achieve the page turning effect.
+
+If a child component has internal state then that **state will not be synced** between both the page
+renders. The same also applies to uncontrolled components.
