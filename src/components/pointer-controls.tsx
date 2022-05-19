@@ -6,14 +6,14 @@ import {
 } from '~/components/animation';
 
 export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWithAnimationProps {
-    disableSwipe?: boolean;
-    minSwipeLength?: number;
-    onOverSwipe?: (overSwpie: number) => number;
-    onSwipeEnd?: (selected: number) => void;
-    onSwipeStart?: (event: PointerEvent<HTMLDivElement>) => boolean;
-    onSwipeTurn?: (selected: number) => void;
-    swipeLength?: number;
-    swipeSpeed?: number;
+    disableSwipe?: boolean | undefined;
+    minSwipeLength?: number | undefined;
+    onOverSwipe?: ((overSwpie: number) => number) | undefined;
+    onSwipeEnd?: ((selected: number) => void) | undefined;
+    onSwipeStart?: ((event: PointerEvent<HTMLDivElement>) => boolean) | undefined;
+    onSwipeTurn?: ((selected: number) => void) | undefined;
+    swipeLength?: number | undefined;
+    swipeSpeed?: number | undefined;
 }
 
 const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerControlsProps) => {

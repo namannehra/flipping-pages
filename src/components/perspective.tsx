@@ -5,23 +5,23 @@ import useResizeObserver from 'use-resize-observer';
 import { FlippingPagesCore, FlippingPagesCoreProps } from '~/components/core';
 
 export interface FlippingPagesWithPerspectiveProps extends FlippingPagesCoreProps {
-    perspectiveMultiplier?: number;
+    perspectiveMultiplier?: number | undefined;
 }
 
 export const defaultPerspectiveMultiplier = 2;
 
 const _FlippingPagesWithPerspective = (props: FlippingPagesWithPerspectiveProps) => {
-    const { containerRef, direction, perspectiveMultiplier = defaultPerspectiveMultiplier } = props;
+    const { direction, perspectiveMultiplier = defaultPerspectiveMultiplier } = props;
 
     const { ref, height, width } = useResizeObserver();
 
-    const mergedRefs = useMemo(() => {
+    const containerRef = useMemo(() => {
         const refs: Ref<HTMLDivElement>[] = [ref];
-        if (containerRef) {
-            refs.push(containerRef);
+        if (props.containerRef) {
+            refs.push(props.containerRef);
         }
         return mergeRefs(refs);
-    }, [ref, containerRef]);
+    }, [ref, props.containerRef]);
 
     const perspective = useMemo(() => {
         switch (direction) {
@@ -55,7 +55,7 @@ const _FlippingPagesWithPerspective = (props: FlippingPagesWithPerspectiveProps)
         <FlippingPagesCore
             {...props}
             containerProps={containerProps}
-            containerRef={mergedRefs}
+            containerRef={containerRef}
         ></FlippingPagesCore>
     );
 };

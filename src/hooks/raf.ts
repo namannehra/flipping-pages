@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { useForceUpdate } from '~/hooks/force-update';
-
 export type UseRafCallback = (timeElapsed: number) => boolean;
 
 export interface UseRafResult {
@@ -10,8 +8,6 @@ export interface UseRafResult {
 }
 
 export const useRaf = (callback: UseRafCallback): UseRafResult => {
-    const forceUpdate = useForceUpdate();
-
     const rafIdRef = useRef<number>();
     const startTimeRef = useRef<number>();
 
@@ -24,12 +20,11 @@ export const useRaf = (callback: UseRafCallback): UseRafResult => {
             }
             const timeElapsed = timestamp - startTimeRef.current;
             const end = callback(timeElapsed);
-            forceUpdate();
             if (!end) {
                 rafIdRef.current = requestAnimationFrame(update);
             }
         },
-        [callback, forceUpdate],
+        [callback],
     );
 
     const start = useCallback(() => {

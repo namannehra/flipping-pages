@@ -4,17 +4,15 @@ import {
     FlippingPagesWithPerspective,
     FlippingPagesWithPerspectiveProps,
 } from '~/components/perspective';
-import { useForceUpdate } from '~/hooks/force-update';
 import { useRaf, UseRafCallback } from '~/hooks/raf';
-import { removeUndefinedValues } from '~/utils/remove-undefined-values';
 
 export interface FlippingPagesWithAnimationProps
     extends Omit<FlippingPagesWithPerspectiveProps, 'willChange'> {
-    animationDuration?: number;
-    onAnimationEnd?: () => void;
-    onAnimationStart?: () => void;
-    onAnimationTurn?: (selected: number) => void;
-    willChange?: boolean | 'auto';
+    animationDuration?: number | undefined;
+    onAnimationEnd?: (() => void) | undefined;
+    onAnimationStart?: (() => void) | undefined;
+    onAnimationTurn?: ((selected: number) => void) | undefined;
+    willChange?: boolean | 'auto' | undefined;
 }
 
 export const defaultAnimationDuration = 400;
@@ -22,93 +20,85 @@ export const defaultAnimationDuration = 400;
 const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => {
     const {
         animationDuration = defaultAnimationDuration,
+        onAnimationEnd,
+        onAnimationStart,
         onAnimationTurn,
-        onAnimationStart: _onAnimationStart,
-        onAnimationEnd: _onAnimationEnd,
     } = props;
 
-    const [autoWillChange, setAutoWillChange] = useState(false);
+    const [animationRunning, setAnimationRunning] = useState(false);
+
     const willChange = useMemo(() => {
         if (typeof props.willChange === 'boolean') {
             return props.willChange;
         }
-        return autoWillChange ? true : undefined;
-    }, [props.willChange, autoWillChange]);
+        return animationRunning ? true : undefined;
+    }, [props.willChange, animationRunning]);
 
-    const onAnimationStart = useCallback(() => {
-        setAutoWillChange(true);
-        _onAnimationStart?.();
-    }, [_onAnimationStart, setAutoWillChange]);
+    const animationRunningChangedRef = useRef(false);
+    useEffect(() => {
+        if (!animationRunningChangedRef.current) {
+            animationRunningChangedRef.current = true;
+            return;
+        }
+        if (animationRunning) {
+            onAnimationStart?.();
+        } else {
+            onAnimationEnd?.();
+        }
+        // @todo Add explanation
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [animationRunning]);
 
-    const onAnimationEnd = useCallback(() => {
-        setAutoWillChange(false);
-        _onAnimationEnd?.();
-    }, [_onAnimationEnd, setAutoWillChange]);
-
-    const forceUpdate = useForceUpdate();
-    const animationRunningRef = useRef(false);
-    const startSelectedRef = useRef(props.selected);
-    const selectedRef = useRef(props.selected);
+    const startSelectedRef = useRef(0);
+    const [selected, setSelected] = useState(props.selected);
 
     const updateAnimation: UseRafCallback = useCallback(
         (timeElapsed: number) => {
             const maxSelectedChange = props.selected - startSelectedRef.current;
             const selectedChange = (Math.sign(maxSelectedChange) * timeElapsed) / animationDuration;
             if (Math.abs(selectedChange) >= Math.abs(maxSelectedChange)) {
-                selectedRef.current = props.selected;
-                animationRunningRef.current = false;
-                onAnimationEnd();
+                setSelected(props.selected);
+                setAnimationRunning(false);
                 return true;
             }
             const newSelected = startSelectedRef.current + selectedChange;
+            setSelected(newSelected);
             onAnimationTurn?.(newSelected);
-            selectedRef.current = newSelected;
             return false;
         },
-        [animationDuration, onAnimationEnd, onAnimationTurn, props.selected],
+        [animationDuration, onAnimationTurn, props.selected, setAnimationRunning],
     );
 
     const { start, stop } = useRaf(updateAnimation);
 
     useEffect(() => {
-        if (selectedRef.current === props.selected) {
-            if (animationRunningRef.current) {
-                animationRunningRef.current = false;
+        if (selected === props.selected) {
+            if (animationRunning) {
                 stop();
-                onAnimationEnd();
+                setAnimationRunning(false);
             }
             return;
         }
         if (!animationDuration) {
-            if (animationRunningRef.current) {
-                animationRunningRef.current = false;
+            if (animationRunning) {
                 stop();
-                onAnimationEnd();
+                setAnimationRunning(false);
             }
-            selectedRef.current = props.selected;
-            forceUpdate();
+            setSelected(props.selected);
             return;
         }
-        if (!animationRunningRef.current) {
-            animationRunningRef.current = true;
-            onAnimationStart();
-        }
-        startSelectedRef.current = selectedRef.current;
+        startSelectedRef.current = selected;
         start();
-    }, [
-        animationDuration,
-        forceUpdate,
-        onAnimationEnd,
-        onAnimationStart,
-        props.selected,
-        start,
-        stop,
-        updateAnimation,
-    ]);
+        setAnimationRunning(true);
+        // @todo Add explanation
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [animationDuration, props.selected, setAnimationRunning]);
 
     return (
         <FlippingPagesWithPerspective
-            {...removeUndefinedValues({ ...props, selected: selectedRef.current, willChange })}
+            {...props}
+            selected={selected}
+            willChange={willChange}
         ></FlippingPagesWithPerspective>
     );
 };

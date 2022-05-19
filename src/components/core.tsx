@@ -9,14 +9,14 @@ import { getTransform } from '~/utils/transform';
 import classes from './core.module.css';
 
 export interface FlippingPagesCoreProps {
-    children?: ReactNode;
-    containerProps?: HTMLAttributes<HTMLDivElement>;
-    containerRef?: Ref<HTMLDivElement>;
+    children?: ReactNode | undefined;
+    containerProps?: HTMLAttributes<HTMLDivElement> | undefined;
+    containerRef?: Ref<HTMLDivElement> | undefined;
     direction: FlippingPagesDirection;
     selected: number;
-    shadowBackground?: string;
-    shadowComponent?: ComponentType<FlippingPagesShadowProps>;
-    willChange?: boolean;
+    shadowBackground?: string | undefined;
+    shadowComponent?: ComponentType<FlippingPagesShadowProps> | undefined;
+    willChange?: boolean | undefined;
 }
 
 const _FlippingPagesCore = (props: FlippingPagesCoreProps) => {
