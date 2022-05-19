@@ -8,8 +8,8 @@ export interface UseRafResult {
 }
 
 export const useRaf = (callback: UseRafCallback): UseRafResult => {
-    const rafIdRef = useRef<number>();
-    const startTimeRef = useRef<number>();
+    const rafIdRef = useRef(0);
+    const startTimeRef = useRef(0);
 
     const update = useCallback(
         (timestamp: number) => {
@@ -28,21 +28,18 @@ export const useRaf = (callback: UseRafCallback): UseRafResult => {
     );
 
     const start = useCallback(() => {
-        startTimeRef.current = undefined;
+        cancelAnimationFrame(rafIdRef.current);
+        startTimeRef.current = 0;
         rafIdRef.current = requestAnimationFrame(update);
     }, [update]);
 
     const stop = useCallback(() => {
-        if (rafIdRef.current) {
-            cancelAnimationFrame(rafIdRef.current);
-        }
+        cancelAnimationFrame(rafIdRef.current);
     }, []);
 
     useEffect(() => {
         return () => {
-            if (rafIdRef.current) {
-                cancelAnimationFrame(rafIdRef.current);
-            }
+            cancelAnimationFrame(rafIdRef.current);
         };
     }, []);
 
