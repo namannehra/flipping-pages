@@ -34,6 +34,15 @@
 .flippingPages {
     flex: 1 0;
     height: 0;
+    user-select: none;
+}
+
+.flippingPages:is(.bottom-to-top, .top-to-bottom) {
+    touch-action: pan-x pinch-zoom;
+}
+
+.flippingPages:is(.left-to-right, .right-to-left) {
+    touch-action: pan-y pinch-zoom;
 }
 
 .page1,
@@ -72,9 +81,6 @@
 }
 
 .controls {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
     box-sizing: border-box;
     width: 100%;
     max-width: 480px;

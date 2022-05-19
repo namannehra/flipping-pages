@@ -45,7 +45,6 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
         } else {
             onAnimationEnd?.();
         }
-        // @todo Add explanation
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [animationRunning]);
 
@@ -86,7 +85,6 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
         startSelectedRef.current = selected;
         start();
         setAnimationRunning(true);
-        // @todo Add explanation
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [animationDuration, props.selected, setAnimationRunning]);
 

@@ -1,4 +1,5 @@
 import {
+    Children,
     HTMLAttributes,
     memo,
     PointerEvent,
@@ -19,6 +20,7 @@ import {
     OnUpOptions,
     usePointerMovement,
 } from '~/hooks/pointer-movement';
+import { getCurrSelected, getNextSelected } from '~/utils/pointer-controls';
 
 export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWithAnimationProps {
     disableSwipe?: boolean | undefined;
@@ -32,11 +34,12 @@ export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWith
 
 export const defaultSwipeLength = 400;
 const defaultOnOverSwipe = (overSwpie: number) => overSwpie / 4;
-const defaultOnSwipeStart = (event: PointerEvent<HTMLDivElement>) => event.isPrimary;
+export const defaultOnSwipeStart = (event: PointerEvent<HTMLDivElement>) => event.isPrimary;
 export const defaultSwipeSpeed = 0.1;
 
 const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerControlsProps) => {
     const {
+        children,
         direction,
         disableSwipe,
         onAnimationEnd: _onAnimationEnd,
@@ -49,6 +52,8 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
         swipeLength = defaultSwipeLength,
         swipeSpeed = defaultSwipeSpeed,
     } = props;
+
+    const childrenLength = Children.count(children);
 
     const animationRunningRef = useRef(false);
     const [pointerDown, setPointerDown] = useState(false);
@@ -99,26 +104,80 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
         [disableSwipe, onSwipeStart, props.selected, setPointerDown],
     );
 
-    const onMove = useCallback((options: OnMoveOptions) => {
-        const { diffX, diffY } = options;
-    }, []);
+    const onMove = useCallback(
+        (options: OnMoveOptions) => {
+            const { diffX, diffY } = options;
+            const selected = getCurrSelected({
+                childrenLength,
+                diffX,
+                diffY,
+                direction,
+                onOverSwipe,
+                startSelected: startSelectedRef.current,
+                swipeLength,
+            });
+            setPointerSelected(selected);
+            onSwipeTurn?.(selected);
+        },
+        [childrenLength, direction, onOverSwipe, onSwipeTurn, swipeLength],
+    );
 
     const onUp = useCallback(
         (options: OnUpOptions) => {
             const { diffX, diffY, speedX, speedY } = options;
             setPointerDown(false);
-            onSwipeEnd?.(0);
+            const nextSelected = getNextSelected({
+                childrenLength,
+                diffX,
+                diffY,
+                direction,
+                onOverSwipe,
+                speedX,
+                speedY,
+                startSelected: startSelectedRef.current,
+                swipeLength,
+                swipeSpeed,
+            });
+            onSwipeEnd?.(nextSelected);
         },
-        [onSwipeEnd, setPointerDown],
+        [
+            childrenLength,
+            direction,
+            onOverSwipe,
+            onSwipeEnd,
+            setPointerDown,
+            swipeLength,
+            swipeSpeed,
+        ],
     );
 
     const onCancel = useCallback(
         (options: OnCancelOptions) => {
             const { diffX, diffY } = options;
             setPointerDown(false);
-            onSwipeEnd?.(0);
+            const nextSelected = getNextSelected({
+                childrenLength,
+                diffX,
+                diffY,
+                direction,
+                onOverSwipe,
+                speedX: 0,
+                speedY: 0,
+                startSelected: startSelectedRef.current,
+                swipeLength,
+                swipeSpeed,
+            });
+            onSwipeEnd?.(nextSelected);
         },
-        [onSwipeEnd, setPointerDown],
+        [
+            childrenLength,
+            direction,
+            onOverSwipe,
+            onSwipeEnd,
+            setPointerDown,
+            swipeLength,
+            swipeSpeed,
+        ],
     );
 
     const { cancelPointer, onPointerCancel, onPointerDown, onPointerMove, onPointerUp } =

@@ -34,7 +34,8 @@ const _FlippingPagesCore = (props: FlippingPagesCoreProps) => {
 
     let pages: ReactNode;
     if (turn === 0) {
-        // @todo Add explaination for wrapping in divs and add test
+        // Child is inside same DOM structure regardless `turn` value
+        // This prevents resetting child's state due to slight change in `selected`
         pages = (
             <div className={classNames(classes.fullPage, classes[direction])}>
                 <div>{children[selected]}</div>
