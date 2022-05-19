@@ -22,6 +22,7 @@
         "format": "prettier --write .",
         "lint": "eslint --ignore-path .prettierignore --max-warnings 0 '**/*.{js,jsx,ts,tsx}'",
         "preview": "vite --config vite.demo.ts preview",
+        "publish-demo": "(cd dist-demo && git add --all && git commit -m 'Update demo' && git push)",
         "test": "jest"
     },
     "peerDependencies": {
