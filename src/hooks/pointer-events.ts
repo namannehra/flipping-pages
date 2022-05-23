@@ -1,42 +1,37 @@
-import { PointerEvent as _PointerEvent, useCallback, useRef } from 'react';
+import { EventHandler, PointerEvent as _PointerEvent, useCallback, useRef, useState } from 'react';
 
 type PointerEvent = _PointerEvent<HTMLDivElement>;
 
-interface BaseOptions {
+export interface UsePointerEventsOnMoveOptions {
     diffX: number;
     diffY: number;
 }
 
-export type OnMoveOptions = BaseOptions;
-
-export interface OnUpOptions extends BaseOptions {
+export interface UsePointerEventsOnUpOptions extends UsePointerEventsOnMoveOptions {
     speedX: number;
     speedY: number;
 }
 
-export type OnCancelOptions = BaseOptions;
-
-export interface UsePointerMovementOptions {
-    onCancel: (options: OnCancelOptions) => void;
+export interface UsePointerEventsOptions {
     onDown: (event: PointerEvent) => boolean;
-    onMove: (options: OnMoveOptions) => void;
-    onUp: (options: OnUpOptions) => void;
+    onMove: (options: UsePointerEventsOnMoveOptions) => void;
+    onUp: (options: UsePointerEventsOnUpOptions) => void;
 }
 
-export interface UsePointerMovementResult {
+export interface UsePointerEventsResult {
     cancelPointer: () => void;
-    onPointerCancel: (event: PointerEvent) => void;
-    onPointerDown: (event: PointerEvent) => void;
-    onPointerMove: (event: PointerEvent) => void;
-    onPointerUp: (event: PointerEvent) => void;
+    onPointerCancel: EventHandler<PointerEvent>;
+    onPointerDown: EventHandler<PointerEvent>;
+    onPointerMove: EventHandler<PointerEvent>;
+    onPointerUp: EventHandler<PointerEvent>;
+    pointerDown: boolean;
 }
 
-export const usePointerMovement = (
-    options: UsePointerMovementOptions,
-): UsePointerMovementResult => {
-    const { onCancel, onDown, onMove, onUp } = options;
+export const usePointerEvents = (options: UsePointerEventsOptions): UsePointerEventsResult => {
+    const { onDown, onMove, onUp } = options;
 
-    const pointerIdRef = useRef<number>();
+    const [pointerId, setPointerId] = useState<number>();
+    const pointerDown = pointerId !== undefined;
 
     const startXRef = useRef(0);
     const startYRef = useRef(0);
@@ -55,7 +50,7 @@ export const usePointerMovement = (
                 return;
             }
             event.currentTarget.setPointerCapture(event.pointerId);
-            pointerIdRef.current = event.pointerId;
+            setPointerId(event.pointerId);
             startXRef.current = event.clientX;
             startYRef.current = event.clientY;
             lastTimeStampRef.current = 0;
@@ -63,12 +58,12 @@ export const usePointerMovement = (
             currXRef.current = event.clientX;
             currYRef.current = event.clientY;
         },
-        [onDown],
+        [onDown, setPointerId],
     );
 
     const onPointerMove = useCallback(
         (event: PointerEvent) => {
-            if (event.pointerId !== pointerIdRef.current) {
+            if (event.pointerId !== pointerId) {
                 return;
             }
             lastTimeStampRef.current = currTimeStampRef.current;
@@ -81,15 +76,15 @@ export const usePointerMovement = (
             const diffY = event.clientY - startYRef.current;
             onMove({ diffX, diffY });
         },
-        [onMove],
+        [onMove, pointerId],
     );
 
     const onPointerUp = useCallback(
         (event: PointerEvent) => {
-            if (event.pointerId !== pointerIdRef.current) {
+            if (event.pointerId !== pointerId) {
                 return;
             }
-            pointerIdRef.current = undefined;
+            setPointerId(undefined);
             const diffX = event.clientX - startXRef.current;
             const diffY = event.clientY - startYRef.current;
             let speedX;
@@ -104,25 +99,32 @@ export const usePointerMovement = (
             }
             onUp({ diffX, diffY, speedX, speedY });
         },
-        [onUp],
+        [onUp, pointerId, setPointerId],
     );
 
     const onPointerCancel = useCallback(
         (event: PointerEvent) => {
-            if (event.pointerId !== pointerIdRef.current) {
+            if (event.pointerId !== pointerId) {
                 return;
             }
-            pointerIdRef.current = undefined;
+            setPointerId(undefined);
             const diffX = event.clientX - startXRef.current;
             const diffY = event.clientY - startYRef.current;
-            onCancel({ diffX, diffY });
+            onUp({ diffX, diffY, speedX: 0, speedY: 0 });
         },
-        [onCancel],
+        [onUp, pointerId, setPointerId],
     );
 
     const cancelPointer = useCallback(() => {
-        pointerIdRef.current = undefined;
-    }, []);
+        setPointerId(undefined);
+    }, [setPointerId]);
 
-    return { onPointerDown, onPointerMove, onPointerUp, onPointerCancel, cancelPointer };
+    return {
+        cancelPointer,
+        onPointerCancel,
+        onPointerDown,
+        onPointerMove,
+        onPointerUp,
+        pointerDown,
+    };
 };

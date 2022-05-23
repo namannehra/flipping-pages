@@ -1,6 +1,5 @@
 import {
     Children,
-    HTMLAttributes,
     memo,
     PointerEvent as _PointerEvent,
     useCallback,
@@ -14,12 +13,12 @@ import {
     FlippingPagesWithAnimation,
     FlippingPagesWithAnimationProps,
 } from '~/components/animation';
+import { useMergePointerEvents } from '~/hooks/merge-pointer-events';
 import {
-    OnCancelOptions,
-    OnMoveOptions,
-    OnUpOptions,
-    usePointerMovement,
-} from '~/hooks/pointer-movement';
+    usePointerEvents,
+    UsePointerEventsOnMoveOptions,
+    UsePointerEventsOnUpOptions,
+} from '~/hooks/pointer-events';
 import { getCurrSelected, getNextSelected } from '~/utils/pointer-controls';
 
 type PointerEvent = _PointerEvent<HTMLDivElement>;
@@ -58,20 +57,8 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
     const childrenLength = Children.count(children);
 
     const animationRunningRef = useRef(false);
-    const [pointerDown, setPointerDown] = useState(false);
     const startSelectedRef = useRef(props.selected);
     const [pointerSelected, setPointerSelected] = useState(props.selected);
-
-    const animationDuration = pointerDown ? 0 : props.animationDuration;
-
-    const selected = pointerDown ? pointerSelected : props.selected;
-
-    const willChange = useMemo(() => {
-        if (typeof props.willChange === 'boolean') {
-            return props.willChange;
-        }
-        return pointerDown ? true : undefined;
-    }, [pointerDown, props.willChange]);
 
     const onAnimationStart = useCallback(() => {
         animationRunningRef.current = true;
@@ -96,18 +83,17 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
             if (disableSwipe || !onSwipeStart(event)) {
                 return false;
             }
-            setPointerDown(true);
             if (!animationRunningRef.current) {
                 startSelectedRef.current = props.selected;
             }
             setPointerSelected(startSelectedRef.current);
             return true;
         },
-        [disableSwipe, onSwipeStart, props.selected, setPointerDown],
+        [disableSwipe, onSwipeStart, props.selected],
     );
 
     const onMove = useCallback(
-        (options: OnMoveOptions) => {
+        (options: UsePointerEventsOnMoveOptions) => {
             const { diffX, diffY } = options;
             const selected = getCurrSelected({
                 childrenLength,
@@ -125,9 +111,8 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
     );
 
     const onUp = useCallback(
-        (options: OnUpOptions) => {
+        (options: UsePointerEventsOnUpOptions) => {
             const { diffX, diffY, speedX, speedY } = options;
-            setPointerDown(false);
             const nextSelected = getNextSelected({
                 childrenLength,
                 diffX,
@@ -142,78 +127,41 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
             });
             onSwipeEnd?.(nextSelected);
         },
-        [
-            childrenLength,
-            direction,
-            onOverSwipe,
-            onSwipeEnd,
-            setPointerDown,
-            swipeLength,
-            swipeSpeed,
-        ],
+        [childrenLength, direction, onOverSwipe, onSwipeEnd, swipeLength, swipeSpeed],
     );
 
-    const onCancel = useCallback(
-        (options: OnCancelOptions) => {
-            const { diffX, diffY } = options;
-            setPointerDown(false);
-            const nextSelected = getNextSelected({
-                childrenLength,
-                diffX,
-                diffY,
-                direction,
-                onOverSwipe,
-                speedX: 0,
-                speedY: 0,
-                startSelected: startSelectedRef.current,
-                swipeLength,
-                swipeSpeed,
-            });
-            onSwipeEnd?.(nextSelected);
-        },
-        [
-            childrenLength,
-            direction,
-            onOverSwipe,
-            onSwipeEnd,
-            setPointerDown,
-            swipeLength,
-            swipeSpeed,
-        ],
-    );
-
-    const { cancelPointer, onPointerCancel, onPointerDown, onPointerMove, onPointerUp } =
-        usePointerMovement({ onDown, onMove, onUp, onCancel });
+    const { cancelPointer, pointerDown, ..._pointerEventListeners } = usePointerEvents({
+        onDown,
+        onMove,
+        onUp,
+    });
 
     useEffect(() => {
         if (disableSwipe) {
             cancelPointer();
-            setPointerDown(false);
         }
-    }, [cancelPointer, disableSwipe, setPointerDown]);
+    }, [cancelPointer, disableSwipe]);
 
-    const containerProps = useMemo((): HTMLAttributes<HTMLDivElement> => {
-        const _containerProps = props.containerProps ?? {};
-        return {
-            ..._containerProps,
-            onPointerCancel: event => {
-                onPointerCancel(event);
-                _containerProps.onPointerCancel?.(event);
-            },
-            onPointerDown: event => {
-                onPointerDown(event);
-                _containerProps.onPointerDown?.(event);
-            },
-            onPointerMove: event => {
-                onPointerMove(event);
-                _containerProps.onPointerMove?.(event);
-            },
-            onPointerUp: event => {
-                onPointerUp(event);
-                _containerProps.onPointerUp?.(event);
-            },
-        };
-    }, [onPointerCancel, onPointerDown, onPointerMove, onPointerUp, props.containerProps]);
+    const animationDuration = pointerDown ? 0 : props.animationDuration;
+
+    const selected = pointerDown ? pointerSelected : props.selected;
+
+    const willChange = useMemo(() => {
+        if (typeof props.willChange === 'boolean') {
+            return props.willChange;
+        }
+        return pointerDown ? true : undefined;
+    }, [pointerDown, props.willChange]);
+
+    const pointerEventListeners = useMergePointerEvents(
+        _pointerEventListeners,
+        props.containerProps,
+    );
+
+    const containerProps = useMemo(
+        () => ({ ...props.containerProps, ...pointerEventListeners }),
+        [pointerEventListeners, props.containerProps],
+    );
 
     return (
         <FlippingPagesWithAnimation

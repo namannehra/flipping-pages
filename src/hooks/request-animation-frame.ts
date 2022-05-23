@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-export type UseRafCallback = (timeElapsed: number) => boolean;
+export type UseRequestAnimationFrameCallback = (timeElapsed: number) => boolean;
 
-export interface UseRafResult {
+export interface UseRequestAnimationFrameResult {
     start: () => void;
     stop: () => void;
 }
 
-export const useRaf = (callback: UseRafCallback): UseRafResult => {
+export const useRequestAnimationFrame = (
+    callback: UseRequestAnimationFrameCallback,
+): UseRequestAnimationFrameResult => {
     const rafIdRef = useRef(0);
     const startTimeRef = useRef(0);
 
