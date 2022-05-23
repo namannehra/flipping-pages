@@ -111,7 +111,7 @@ export default App;
 | `onSwipeTurn`           | `(selected: number) => void`                                               |                              |
 | `perspectiveMultiplier` | `number`                                                                   | `2`                          |
 | `selected`\*            | `number`                                                                   |                              |
-| `shadowBackground`      | `string`                                                                   | `rgb(0, 0, 0, 0.25)`         |
+| `shadowBackground`      | `string`                                                                   | `'rgb(0, 0, 0, 0.25)'`       |
 | `shadowComponent`       | `Component<ShadowProps>`                                                   |                              |
 | `swipeLength`           | `number`                                                                   | `400`                        |
 | `swipeSpeed`            | `number`                                                                   | `0.1`                        |
