@@ -75,6 +75,8 @@ export default App;
 .page {
     height: 100%;
     width: 100%;
+    user-select: none;
+    touch-action: none;
 }
 
 .page1 {

@@ -37,22 +37,19 @@
     user-select: none;
 }
 
-.flippingPages:is(.bottom-to-top, .top-to-bottom) {
+.flippingPages:is(.bottom-to-top, .top-to-bottom) .page {
     touch-action: pan-x pinch-zoom;
 }
 
-.flippingPages:is(.left-to-right, .right-to-left) {
+.flippingPages:is(.left-to-right, .right-to-left) .page {
     touch-action: pan-y pinch-zoom;
 }
 
-.page1,
-.page2,
-.page3,
-.page4 {
+.page {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--gray-9);
+    background-color: var(--surface-1);
     color: var(--gray-0);
     font-size: var(--font-size-fluid-3);
     position: absolute;

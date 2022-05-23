@@ -112,10 +112,10 @@ const _App = () => {
                         swipeLength={swipeLength}
                         swipeSpeed={swipeSpeed}
                     >
-                        <div className={classes.page1}>First page</div>
-                        <div className={classes.page2}>Page 2</div>
-                        <div className={classes.page3}>Page 3</div>
-                        <div className={classes.page4}>Last page</div>
+                        <div className={classNames(classes.page, classes.page1)}>First page</div>
+                        <div className={classNames(classes.page, classes.page2)}>Page 2</div>
+                        <div className={classNames(classes.page, classes.page3)}>Page 3</div>
+                        <div className={classNames(classes.page, classes.page4)}>Last page</div>
                     </FlippingPages>
                 </div>
                 <div className={classes.prevAndNext}>

@@ -2,7 +2,7 @@ import {
     Children,
     HTMLAttributes,
     memo,
-    PointerEvent,
+    PointerEvent as _PointerEvent,
     useCallback,
     useEffect,
     useMemo,
@@ -22,11 +22,13 @@ import {
 } from '~/hooks/pointer-movement';
 import { getCurrSelected, getNextSelected } from '~/utils/pointer-controls';
 
+type PointerEvent = _PointerEvent<HTMLDivElement>;
+
 export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWithAnimationProps {
     disableSwipe?: boolean | undefined;
     onOverSwipe?: ((overSwipe: number) => number) | undefined;
     onSwipeEnd?: ((selected: number) => void) | undefined;
-    onSwipeStart?: ((event: PointerEvent<HTMLDivElement>) => boolean) | undefined;
+    onSwipeStart?: ((event: PointerEvent) => boolean) | undefined;
     onSwipeTurn?: ((selected: number) => void) | undefined;
     swipeLength?: number | undefined;
     swipeSpeed?: number | undefined;
@@ -34,7 +36,7 @@ export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWith
 
 export const defaultSwipeLength = 400;
 const defaultOnOverSwipe = (overSwipe: number) => overSwipe / 4;
-export const defaultOnSwipeStart = (event: PointerEvent<HTMLDivElement>) => event.isPrimary;
+export const defaultOnSwipeStart = (event: PointerEvent) => event.isPrimary;
 export const defaultSwipeSpeed = 0.1;
 
 const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerControlsProps) => {
@@ -90,7 +92,7 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
     }, [_onAnimationEnd]);
 
     const onDown = useCallback(
-        (event: PointerEvent<HTMLDivElement>) => {
+        (event: PointerEvent) => {
             if (disableSwipe || !onSwipeStart(event)) {
                 return false;
             }
