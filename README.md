@@ -137,6 +137,8 @@ Props passed to the root element.
 
 ## `containerRef`
 
+`Ref<HTMLDivElement>`
+
 Ref for the root element.
 
 ## `direction`\*
