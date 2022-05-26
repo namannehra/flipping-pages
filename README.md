@@ -2,7 +2,7 @@ React component for flipping book pages animation
 
 # Demo
 
-https://namannehra.github.io/flipping-pages/v3/
+https://namannehra.github.io/flipping-pages/
 
 # Installation
 
@@ -11,13 +11,13 @@ Supported React versions: `^16.14.0 || ^17.0.0 || ^18.0.0`
 ## NPM
 
 ```
-npm install flipping-pages@beta
+npm install flipping-pages
 ```
 
 ## Yarn
 
 ```
-yarn add flipping-pages@beta
+yarn add flipping-pages
 ```
 
 # Example

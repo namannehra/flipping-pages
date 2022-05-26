@@ -5,9 +5,9 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react(), tsconfigPaths()],
-    base: '/flipping-pages/v3/',
+    base: '/flipping-pages/',
     build: {
         target: 'es2021',
-        outDir: 'dist-demo/v3',
+        outDir: 'dist-demo',
     },
 });
