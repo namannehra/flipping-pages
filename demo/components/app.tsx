@@ -33,64 +33,52 @@ const _App = () => {
 
     const handleAnimationStart = useCallback(() => {
         setAnimationRunning(true);
-    }, [setAnimationRunning]);
+    }, []);
 
-    const handleAnimationTurn = useCallback(
-        (selected: number) => {
-            setAnimationTurn(selected);
-        },
-        [setAnimationTurn],
-    );
+    const handleAnimationTurn = useCallback((selected: number) => {
+        setAnimationTurn(selected);
+    }, []);
 
     const handleAnimationEnd = useCallback(() => {
         setAnimationRunning(false);
-    }, [setAnimationRunning]);
+    }, []);
 
     useEffect(() => {
         if (!animationRunning) {
             setAnimationTurn(undefined);
         }
-    }, [animationRunning, setAnimationTurn]);
+    }, [animationRunning]);
 
-    const handleSwipeStart = useCallback(
-        (event: PointerEvent<HTMLDivElement>) => {
-            if (!defaultOnSwipeStart(event)) {
-                return false;
-            }
-            setSwiping(true);
-            return true;
-        },
-        [setSwiping],
-    );
+    const handleSwipeStart = useCallback((event: PointerEvent<HTMLDivElement>) => {
+        if (!defaultOnSwipeStart(event)) {
+            return false;
+        }
+        setSwiping(true);
+        return true;
+    }, []);
 
-    const handleSwipeTurn = useCallback(
-        (selected: number) => {
-            setSwipeTurn(selected);
-        },
-        [setSwipeTurn],
-    );
+    const handleSwipeTurn = useCallback((selected: number) => {
+        setSwipeTurn(selected);
+    }, []);
 
-    const handleSwipeEnd = useCallback(
-        (selected: number) => {
-            setSwiping(false);
-            setSelected(selected);
-        },
-        [setSelected, setSwiping],
-    );
+    const handleSwipeEnd = useCallback((selected: number) => {
+        setSwiping(false);
+        setSelected(selected);
+    }, []);
 
     useEffect(() => {
         if (!swiping) {
             setSwipeTurn(undefined);
         }
-    }, [swiping, setSwipeTurn]);
+    }, [swiping]);
 
     const prev = useCallback(() => {
         setSelected(selected => (selected > 0 ? selected - 1 : selected));
-    }, [setSelected]);
+    }, []);
 
     const next = useCallback(() => {
         setSelected(selected => (selected < 3 ? selected + 1 : selected));
-    }, [setSelected]);
+    }, []);
 
     return (
         <div className={classes.container}>

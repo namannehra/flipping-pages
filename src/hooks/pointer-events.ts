@@ -58,7 +58,7 @@ export const usePointerEvents = (options: UsePointerEventsOptions): UsePointerEv
             currXRef.current = event.clientX;
             currYRef.current = event.clientY;
         },
-        [onDown, setPointerId],
+        [onDown],
     );
 
     const onPointerMove = useCallback(
@@ -99,7 +99,7 @@ export const usePointerEvents = (options: UsePointerEventsOptions): UsePointerEv
             }
             onUp({ diffX, diffY, speedX, speedY });
         },
-        [onUp, pointerId, setPointerId],
+        [onUp, pointerId],
     );
 
     const onPointerCancel = useCallback(
@@ -112,12 +112,12 @@ export const usePointerEvents = (options: UsePointerEventsOptions): UsePointerEv
             const diffY = event.clientY - startYRef.current;
             onUp({ diffX, diffY, speedX: 0, speedY: 0 });
         },
-        [onUp, pointerId, setPointerId],
+        [onUp, pointerId],
     );
 
     const cancelPointer = useCallback(() => {
         setPointerId(undefined);
-    }, [setPointerId]);
+    }, []);
 
     return {
         cancelPointer,

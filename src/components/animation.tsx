@@ -71,7 +71,7 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
             onAnimationTurn?.(newSelected);
             return false;
         },
-        [animationDuration, onAnimationTurn, props.selected, setAnimationRunning],
+        [animationDuration, onAnimationTurn, props.selected],
     );
 
     const { start, stop } = useRequestAnimationFrame(updateAnimation);
@@ -94,7 +94,7 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
             setAnimationRunning(true);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [animationDuration, props.selected, setAnimationRunning],
+        [animationDuration, props.selected],
     );
 
     return (
