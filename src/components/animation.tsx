@@ -4,10 +4,7 @@ import {
     FlippingPagesWithPerspective,
     FlippingPagesWithPerspectiveProps,
 } from '~/components/perspective';
-import {
-    useRequestAnimationFrame,
-    UseRequestAnimationFrameCallback,
-} from '~/hooks/request-animation-frame';
+import { useAnimation } from '~/hooks/animation';
 
 export interface FlippingPagesWithAnimationProps
     extends Omit<FlippingPagesWithPerspectiveProps, 'willChange'> {
@@ -37,33 +34,25 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
         return animationRunning ? true : undefined;
     }, [props.willChange, animationRunning]);
 
-    const animationRunningChangedRef = useRef(false);
-    useEffect(
-        () => {
-            if (!animationRunningChangedRef.current) {
-                animationRunningChangedRef.current = true;
-                return;
-            }
-            if (animationRunning) {
-                onAnimationStart?.();
-            } else {
-                onAnimationEnd?.();
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [animationRunning],
-    );
-
     const startSelectedRef = useRef(0);
     const [selected, setSelected] = useState(props.selected);
 
-    const updateAnimation: UseRequestAnimationFrameCallback = useCallback(
+    const onStart = useCallback(() => {
+        setAnimationRunning(true);
+        onAnimationStart?.();
+    }, [onAnimationStart]);
+
+    const onEnd = useCallback(() => {
+        setAnimationRunning(false);
+        onAnimationEnd?.();
+    }, [onAnimationEnd]);
+
+    const updateAnimation = useCallback(
         (timeElapsed: number) => {
             const maxSelectedChange = props.selected - startSelectedRef.current;
             const selectedChange = (Math.sign(maxSelectedChange) * timeElapsed) / animationDuration;
             if (Math.abs(selectedChange) >= Math.abs(maxSelectedChange)) {
                 setSelected(props.selected);
-                setAnimationRunning(false);
                 return true;
             }
             const newSelected = startSelectedRef.current + selectedChange;
@@ -74,24 +63,21 @@ const _FlippingPagesWithAnimation = (props: FlippingPagesWithAnimationProps) => 
         [animationDuration, onAnimationTurn, props.selected],
     );
 
-    const { start, stop } = useRequestAnimationFrame(updateAnimation);
+    const { start, stop } = useAnimation({ callback: updateAnimation, onEnd, onStart });
 
     useEffect(
         () => {
             if (selected === props.selected) {
                 stop();
-                setAnimationRunning(false);
                 return;
             }
             if (!animationDuration) {
                 stop();
-                setAnimationRunning(false);
                 setSelected(props.selected);
                 return;
             }
             startSelectedRef.current = selected;
             start();
-            setAnimationRunning(true);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [animationDuration, props.selected],
