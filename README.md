@@ -102,6 +102,7 @@ export default App;
 | `containerRef`          | `Ref<HTMLDivElement>`                                                      |                              |
 | `direction`\*           | `'bottom-to-top' \| 'top-to-bottom' \| 'left-to-right' \| 'right-to-left'` |                              |
 | `disableSwipe`          | `boolean`                                                                  | `false`                      |
+| `noSwipeClass`          | `string`                                                                   |                              |
 | `onAnimationEnd`        | `() => void`                                                               |                              |
 | `onAnimationStart`      | `() => void`                                                               |                              |
 | `onAnimationTurn`       | `(selected: number) => void`                                               |                              |
@@ -152,6 +153,12 @@ Direction of page turn.
 `boolean`
 
 Disables page turning by swiping.
+
+## `noSwipeClass`
+
+`string`
+
+Elements with this class (or their descendants) will not trigger page turn by swiping.
 
 ## `onAnimationEnd`
 

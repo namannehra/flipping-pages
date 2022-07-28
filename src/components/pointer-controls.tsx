@@ -2,12 +2,14 @@ import {
     Children,
     memo,
     PointerEvent as _PointerEvent,
+    Ref,
     useCallback,
     useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react';
+import mergeRefs from 'react-merge-refs';
 
 import {
     FlippingPagesWithAnimation,
@@ -25,6 +27,7 @@ type PointerEvent = _PointerEvent<HTMLDivElement>;
 
 export interface FlippingPagesWithPointerControlsProps extends FlippingPagesWithAnimationProps {
     disableSwipe?: boolean | undefined;
+    noSwipeClass?: string | undefined;
     onOverSwipe?: ((overSwipe: number) => number) | undefined;
     onSwipeEnd?: ((selected: number) => void) | undefined;
     onSwipeStart?: ((event: PointerEvent) => boolean) | undefined;
@@ -43,6 +46,7 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
         children,
         direction,
         disableSwipe,
+        noSwipeClass,
         onAnimationEnd: _onAnimationEnd,
         onAnimationStart: _onAnimationStart,
         onAnimationTurn: _onAnimationTurn,
@@ -53,6 +57,8 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
         swipeLength = defaultSwipeLength,
         swipeSpeed = defaultSwipeSpeed,
     } = props;
+
+    const ref = useRef<HTMLDivElement>(null);
 
     const childrenLength = Children.count(children);
 
@@ -80,7 +86,21 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
 
     const onDown = useCallback(
         (event: PointerEvent) => {
-            if (disableSwipe || !onSwipeStart(event)) {
+            if (disableSwipe) {
+                return false;
+            }
+            if (noSwipeClass) {
+                if (event.target instanceof Element) {
+                    let target: Element | null = event.target;
+                    while (target && target !== ref.current) {
+                        if (target.classList.contains(noSwipeClass)) {
+                            return false;
+                        }
+                        target = target.parentElement;
+                    }
+                }
+            }
+            if (!onSwipeStart(event)) {
                 return false;
             }
             if (!animationRunningRef.current) {
@@ -89,7 +109,7 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
             setPointerSelected(startSelectedRef.current);
             return true;
         },
-        [disableSwipe, onSwipeStart, props.selected],
+        [disableSwipe, noSwipeClass, onSwipeStart, props.selected],
     );
 
     const onMove = useCallback(
@@ -163,11 +183,20 @@ const _FlippingPagesWithPointerControls = (props: FlippingPagesWithPointerContro
         [pointerEventListeners, props.containerProps],
     );
 
+    const containerRef = useMemo(() => {
+        const refs: Ref<HTMLDivElement>[] = [ref];
+        if (props.containerRef) {
+            refs.push(props.containerRef);
+        }
+        return mergeRefs(refs);
+    }, [props.containerRef]);
+
     return (
         <FlippingPagesWithAnimation
             {...props}
             animationDuration={animationDuration}
             containerProps={containerProps}
+            containerRef={containerRef}
             onAnimationEnd={onAnimationEnd}
             onAnimationStart={onAnimationStart}
             onAnimationTurn={onAnimationTurn}
