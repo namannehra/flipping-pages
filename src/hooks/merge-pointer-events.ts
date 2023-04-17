@@ -12,7 +12,7 @@ export const pointerEventProps = [
 ] as const;
 
 export type PointerEventsEmitter = {
-    [K in typeof pointerEventProps[number]]?: EventHandler<PointerEvent> | undefined;
+    [K in (typeof pointerEventProps)[number]]?: EventHandler<PointerEvent> | undefined;
 };
 
 export const useMergePointerEvents = (

@@ -3,7 +3,6 @@
     "include": ["*"],
     "files": ["package.json"],
     "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
         "composite": true,
         "resolveJsonModule": true
     }

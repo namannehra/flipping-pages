@@ -1,5 +1,5 @@
 import { memo, Ref, useMemo } from 'react';
-import mergeRefs from 'react-merge-refs';
+import { mergeRefs } from 'react-merge-refs';
 import useResizeObserver from 'use-resize-observer';
 
 import { FlippingPagesCore, FlippingPagesCoreProps } from '~/components/core';
