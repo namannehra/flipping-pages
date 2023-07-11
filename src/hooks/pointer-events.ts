@@ -49,7 +49,6 @@ export const usePointerEvents = (options: UsePointerEventsOptions): UsePointerEv
             if (!onDown(event)) {
                 return;
             }
-            event.currentTarget.setPointerCapture(event.pointerId);
             setPointerId(event.pointerId);
             startXRef.current = event.clientX;
             startYRef.current = event.clientY;
@@ -66,6 +65,7 @@ export const usePointerEvents = (options: UsePointerEventsOptions): UsePointerEv
             if (event.pointerId !== pointerId) {
                 return;
             }
+            event.currentTarget.setPointerCapture(event.pointerId);
             lastTimeStampRef.current = currTimeStampRef.current;
             lastXRef.current = currXRef.current;
             lastYRef.current = currYRef.current;
